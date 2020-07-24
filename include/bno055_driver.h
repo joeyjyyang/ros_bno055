@@ -1,6 +1,14 @@
 #ifndef BNO055_DRIVER_H
 #define BNO055_DRIVER_H
 
+enum class RegisterMap : unsigned char
+{
+  /* Page 0 */
+
+  /* Page 1 */
+ 
+};
+
 // [PWR_MODE]
 enum class PowerMode : unsigned char
 {
@@ -29,15 +37,15 @@ enum class OperationMode : unsigned char
   nDof = 0x0C// FMC is turned ON
 };
 
-namespace bno055_imu
+namespace bno055
 {
-class IMU
+class Imu
 {
 
 public:
-  IMU();
+  Imu();
   
-  ~IMU();
+  ~Imu();
 
 private:
 
