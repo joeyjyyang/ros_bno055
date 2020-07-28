@@ -29,4 +29,4 @@ rospack profile
 
 ## Usage
 ### Example
-
+- `rosrun bno055_driver bno055_node`
