@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(bno055_driver)
+
+add_compile_options(-std=c++11)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  message_generation
+  sensor_msgs
+)
+
+generate_messages(
+  DEPENDENCIES
+  sensor_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS 
+  message_runtime
+)
+
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+)
+
+add_library(${PROJECT_NAME}
+  src/bno055_driver.cpp
+)
+
+add_executable(bno055_node src/bno055_node.cpp)
+
+target_link_libraries(bno055_node
+  ${catkin_LIBRARIES}
+)
+
