@@ -1,5 +1,5 @@
 # umrp-imu-driver
-**A ROS driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout**
+**A ROS driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout.**
 
 ## Overview
 
