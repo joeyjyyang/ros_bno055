@@ -22,7 +22,6 @@ sudo apt-get install -y
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 catkin_make # catkin build bno055_driver (if using catkin_tools)
 source devel/setup.bash
-source ~/.bashrc # get email and text credentials
 rospack profile
 ```
 
