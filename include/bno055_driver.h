@@ -1,6 +1,14 @@
 #ifndef BNO055_DRIVER_H
 #define BNO055_DRIVER_H
 
+#include <serial.h>
+#include <iostream>
+#include <vector>
+#include <cstdio>
+#include <string>
+
+//namespace bno055
+//{
 enum class RegisterMap : unsigned char
 {
   // REGISTER_NAME = REGISTER_ADDRESS;
@@ -98,7 +106,7 @@ enum class RegisterMap : unsigned char
 };
 
 // PWR_MODE Register [0x3E]
-enum class PowerMode : unsigned char
+enum class PowMode : unsigned char
 {
   NORMAL_MODE = 0x00,
   LOW_POWER_MODE = 0x01,
@@ -106,7 +114,7 @@ enum class PowerMode : unsigned char
 };
 
 // OPR_MODE Register [0x3D]
-enum class OperationMode : unsigned char
+enum class OpMode : unsigned char
 {
   CONFIG_MODE = 0x00,
   /* Non-Fusion Modes */
@@ -125,19 +133,22 @@ enum class OperationMode : unsigned char
   NDOF = 0x0C// FMC is turned ON
 };
 
-namespace bno055
-{
 class Imu
 {
 
 public:
   Imu();
-  
+  void setPowMode(PowMode pow_mode);
+  void setOpMode(OpMode op_mode);
+  void writeRegister(regAddr reg_addr);
+  void readRegister(regAddr reg_addr);
+  void enumPorts();
+  int run();
   ~Imu();
 
 private:
 
 };
-}
+//} // End of namespace bno055
 
 #endif // BNO055_DRIVER_H
