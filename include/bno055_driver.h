@@ -140,8 +140,8 @@ public:
   Imu();
   void setPowMode(PowMode pow_mode);
   void setOpMode(OpMode op_mode);
-  void writeRegister(regAddr reg_addr);
-  void readRegister(regAddr reg_addr);
+  void writeReg(unsigned char reg_addr, unsigned char val);
+  void readReg(unsigned char reg_addr);
   void enumPorts();
   int run();
   ~Imu();

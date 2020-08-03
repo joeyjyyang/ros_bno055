@@ -4,12 +4,23 @@ using namespace std;
 //{
 Imu::Imu()
 {
-  std::cout << "BNO055 Imu initialized." << std::endl;
+  cout << "BNO055 Imu initialized." << endl;
 }
 
 void Imu::setPowMode(PowMode pow_mode)
+{   
+}
+
+void Imu::setOpMode(OpMode op_mode)
 {
-   
+}
+
+void writeReg(unsigned char reg_addr, unsigned char val)
+{
+}
+
+void readReg(unsigned char reg_addr)
+{
 }
 
 void Imu::enumPorts()
@@ -103,3 +114,9 @@ int Imu::run()
     count += 1;
   }
 }
+
+Imu::~Imu()
+{
+  cout << "BNO055 Imu destroyed." << endl;
+}
+
