@@ -1,5 +1,5 @@
 #include "../include/bno055_driver.h"
-
+using namespace std;
 //namespace bno055
 //{
 Imu::Imu()
