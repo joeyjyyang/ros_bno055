@@ -1,7 +1,7 @@
 #ifndef BNO055_DRIVER_H
 #define BNO055_DRIVER_H
 
-#include <serial.h>
+#include <serial/serial.h>
 #include <iostream>
 #include <vector>
 #include <cstdio>
