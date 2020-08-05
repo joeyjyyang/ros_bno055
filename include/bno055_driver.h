@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <string>
 
+#define UART_DEVICE "/dev/ttyS0"
 //namespace bno055
 //{
 enum class RegisterMap : unsigned char

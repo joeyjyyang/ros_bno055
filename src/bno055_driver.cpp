@@ -39,7 +39,7 @@ void Imu::enumPorts()
 
 int Imu::run()
 {
-  std::string port("/dev/ttyS0");
+  std::string port(UART_DEVICE);
   unsigned long baud = 9600;
 
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
