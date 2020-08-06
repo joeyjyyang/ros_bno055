@@ -2,12 +2,15 @@
 #define BNO055_DRIVER_H
 
 #include <serial/serial.h>
+#include <linux/i2c-dev.h>
+#include <i2c/smbus.h>
 #include <iostream>
 #include <vector>
 #include <cstdio>
 #include <string>
 
 #define UART_DEVICE "/dev/ttyS0"
+#define I2C_DEVICE "/dev/i2c-1"
 //namespace bno055
 //{
 enum class RegisterMap : unsigned char
