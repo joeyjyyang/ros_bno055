@@ -26,6 +26,9 @@ rospack profile
 ```
 
 ## Nodes
+- `bno055_node`
+
+## Parameters
 
 ## Usage
 ### Example
