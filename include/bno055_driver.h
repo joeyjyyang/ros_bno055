@@ -9,8 +9,8 @@
 #include <cstdio>
 #include <string>
 
-#define UART_DEVICE "/dev/ttyS0"
 #define I2C_DEVICE "/dev/i2c-1"
+
 //namespace bno055
 //{
 enum class RegisterMap : unsigned char
@@ -139,7 +139,6 @@ enum class OpMode : unsigned char
 
 class Imu
 {
-
 public:
   Imu();
   void setPowMode(PowMode pow_mode);
@@ -151,7 +150,8 @@ public:
   ~Imu();
 
 private:
-
+  PowMode pow_mode_;
+  OpMode op_mode_;
 };
 //} // End of namespace bno055
 
