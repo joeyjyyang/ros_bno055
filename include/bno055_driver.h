@@ -1,15 +1,17 @@
 #ifndef BNO055_DRIVER_H
 #define BNO055_DRIVER_H
 
-#include <serial/serial.h>
 #include <linux/i2c-dev.h>
-#include <i2c/smbus.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+//#include <i2c/smbus.h>
 #include <iostream>
 #include <vector>
 #include <cstdio>
 #include <string>
 
-#define I2C_DEVICE "/dev/i2c-1"
+#define I2C_BUS "/dev/i2c-1"
+#define I2C_ADDRESS 0x28
 
 //namespace bno055
 //{
@@ -141,10 +143,11 @@ class Imu
 {
 public:
   Imu();
+  int accessI2c(string i2c_bus, unsigned char i2c_address);
   void setPowMode(PowMode pow_mode);
   void setOpMode(OpMode op_mode);
-  void writeReg(unsigned char reg_addr, unsigned char val);
-  void readReg(unsigned char reg_addr);
+  //void writeReg(unsigned char reg_addr, unsigned char val);
+  //void readReg(unsigned char reg_addr);
   void enumPorts();
   int run();
   ~Imu();
