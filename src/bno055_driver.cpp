@@ -2,9 +2,6 @@
 
 //namespace bno055
 //{
-const std::string I2C_BUS = "/dev/i2c-1";
-const unsigned char I2C_ADDRESS = 0x28;
-
 Imu::Imu()
 {
   cout << "BNO055 Imu initialized." << endl;
@@ -53,15 +50,91 @@ void Imu::setOprMode(OprMode opr_mode)
     perror("ERROR: ");
   }  
 }
-/*
-void writeReg(unsigned char reg_addr, unsigned char val)
+
+void Imu::getAcc()
 {
+  char acc_buf[6] = {};
+  acc_buf[0] = ACC_DATA_X_LSB;
+  if (write(file_desc, acc_buf, 1) != 1)
+  {
+    std::cout << "ERROR: Failed to write to accelerometer register: " << ACC_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
+  
+  if (read(file_desc, acc_buf, 6) != 6)
+  {
+    std::cout << "ERROR: Failed to read accelerometer data from register: " << ACC_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
 }
 
-void readReg(unsigned char reg_addr)
+void Imu::getMag()
 {
+  char mag_buf[6] = {};
+  mag_buf[0] = MAG_DATA_X_LSB;
+  if (write(file_desc, mag_buf, 1) != 1)
+  {
+    std::cout << "ERROR: Failed to write to magnetometer register: " << MAG_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
+  
+  if (read(file_desc, mag_buf, 6) != 6)
+  {
+    std::cout << "ERROR: Failed to read magnetometer data from register: " << MAG_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
 }
-*/
+
+void Imu::getGyr()
+{
+  char gyr_buf[6] = {};
+  gyr_buf[0] = GYR_DATA_X_LSB;
+  if (write(file_desc, gyr_buf, 1) != 1)
+  {
+    std::cout << "ERROR: Failed to write to gyroscope register: " << GYR_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
+  
+  if (read(file_desc, gyr_buf, 6) != 6)
+  {
+    std::cout << "ERROR: Failed to read gyroscope data from register: " << GYR_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
+}
+
+void Imu::getEul()
+{
+  char eul_buf[6] = {};
+  eul_buf[0] = EUL_DATA_X_LSB;
+  if (write(file_desc, eul_buf, 1) != 1)
+  {
+    std::cout << "ERROR: Failed to write to euler register: " << EUL_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
+  
+  if (read(file_desc, eul_buf, 6) != 6)
+  {
+    std::cout << "ERROR: Failed to read euler data from register: " << EUL_DATA_X_LSB << std::endl;
+    perror("ERROR: ");
+  }
+}
+
+void Imu::getQua()
+{
+  char qua_buf[8] = {};
+  qua_buf[0] = QUA_DATA_W_LSB;
+  if (write(file_desc, qua_buf, 1) != 1)
+  {
+    std::cout << "ERROR: Failed to write to quaternion register: " << QUA_DATA_W_LSB << std::endl;
+    perror("ERROR: ");
+  }
+  
+  if (read(file_desc, qua_buf, 6) != 6)
+  {
+    std::cout << "ERROR: Failed to read quaternion data from register: " << QUA_DATA_W_LSB << std::endl;
+    perror("ERROR: ");
+  }
+}
 
 Imu::~Imu()
 {

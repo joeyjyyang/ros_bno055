@@ -17,6 +17,8 @@
 const char* I2C_BUS = "/dev/i2c-1";
 const int I2C_ADDRESS = 0x28;
 
+int file_desc;
+
 //namespace bno055
 //{
 enum class RegisterMap : unsigned char
@@ -148,13 +150,15 @@ class Imu
 public:
   Imu();
   int accessI2c();
-  void setPowMode(PowMode pow_mode);
-  void setOprMode(OprMode opr_mode);
-  //void writeReg(unsigned char reg_addr, unsigned char val);
-  //void readReg(unsigned char reg_addr);
-  void enumPorts();
-  int run();
+  int setPowMode(PowMode pow_mode);
+  int setOprMode(OprMode opr_mode);
+  int getAcc();
+  int getMag();
+  int getGyr();
+  int getEul();
+  int getQua(); 
   ~Imu();
+  /* Create data structure to hold sensor data */
 
 private:
   PowMode pow_mode_;
