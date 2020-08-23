@@ -2,6 +2,9 @@
 using namespace std;
 //namespace bno055
 //{
+const std::string I2C_BUS = "/dev/i2c-1";
+const unsigned char I2C_ADDRESS = 0x28;
+
 Imu::Imu()
 {
   cout << "BNO055 Imu initialized." << endl;

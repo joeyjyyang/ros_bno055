@@ -10,8 +10,8 @@
 #include <cstdio>
 #include <string>
 
-#define I2C_BUS "/dev/i2c-1"
-#define I2C_ADDRESS 0x28
+extern const std::string I2C_BUS = "/dev/i2c-1";
+extern const unsigned char I2C_ADDRESS;
 
 //namespace bno055
 //{
