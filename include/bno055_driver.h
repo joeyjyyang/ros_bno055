@@ -150,13 +150,13 @@ class Imu
 public:
   Imu();
   int accessI2c();
-  int setPowMode(PowMode pow_mode);
-  int setOprMode(OprMode opr_mode);
-  int getAcc();
-  int getMag();
-  int getGyr();
-  int getEul();
-  int getQua(); 
+  void setPowMode(PowMode pow_mode);
+  void setOprMode(OprMode opr_mode);
+  void getAcc();
+  void getMag();
+  void getGyr();
+  void getEul();
+  void getQua(); 
   ~Imu();
   /* Create data structure to hold sensor data */
 
