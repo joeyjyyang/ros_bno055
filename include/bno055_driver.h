@@ -124,7 +124,7 @@ enum class PowMode : unsigned char
 };
 
 // OPR_MODE Register [0x3D]
-enum class OpMode : unsigned char
+enum class OprMode : unsigned char
 {
   CONFIG_MODE = 0x00,
   /* Non-Fusion Modes */
@@ -149,7 +149,7 @@ public:
   Imu();
   int accessI2c();
   void setPowMode(PowMode pow_mode);
-  void setOpMode(OpMode op_mode);
+  void setOprMode(OprMode opr_mode);
   //void writeReg(unsigned char reg_addr, unsigned char val);
   //void readReg(unsigned char reg_addr);
   void enumPorts();
@@ -158,7 +158,7 @@ public:
 
 private:
   PowMode pow_mode_;
-  OpMode op_mode_;
+  OpMode opr_mode_;
 };
 //} // End of namespace bno055
 
