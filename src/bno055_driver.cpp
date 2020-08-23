@@ -27,10 +27,28 @@ int Imu::accessI2c()
 
 void Imu::setPowMode(PowMode pow_mode)
 {   
+  // Set power mode.
+  char write_buf[2];
+  write_buf[0] = RegisterMap::PWR_MODE;
+  write_buf[1] = pow_mode;
+  if (write(file_desc, write_buf, 2) != 2)
+  {
+    std::cout << "ERROR: Failed to set power mode to: " << pow_mode << std::endl;
+    perror("ERROR: ");
+  }  
 }
 
 void Imu::setOpMode(OpMode op_mode)
 {
+  // Set operation mode.
+  char write_buf[2];
+  write_buf[0] = RegisterMap::OPR_MODE;
+  write_buf[1] = op_mode;
+  if (write(file_desc, write_buf, 2) != 2)
+  {
+    std::cout << "ERROR: Failed to set operation mode to: " << op_mode << std::endl;
+    perror("ERROR: ");
+  }  
 }
 /*
 void writeReg(unsigned char reg_addr, unsigned char val)
