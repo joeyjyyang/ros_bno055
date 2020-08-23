@@ -1,17 +1,21 @@
 #ifndef BNO055_DRIVER_H
 #define BNO055_DRIVER_H
 
-#include <linux/i2c-dev.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-//#include <i2c/smbus.h>
+/* Helper */
 #include <iostream>
 #include <vector>
 #include <cstdio>
 #include <string>
 
-extern const std::string I2C_BUS = "/dev/i2c-1";
-extern const unsigned char I2C_ADDRESS;
+/* I2C */
+#include <linux/i2c-dev.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <cstdio>
+#include <fcntl.h>
+
+const char* I2C_BUS = "/dev/i2c-1";
+const int I2C_ADDRESS = 0x28;
 
 //namespace bno055
 //{
@@ -120,7 +124,7 @@ enum class PowMode : unsigned char
 };
 
 // OPR_MODE Register [0x3D]
-enum class OpMode : unsigned char
+enum class OprMode : unsigned char
 {
   CONFIG_MODE = 0x00,
   /* Non-Fusion Modes */
@@ -143,9 +147,9 @@ class Imu
 {
 public:
   Imu();
-  int accessI2c(string i2c_bus, unsigned char i2c_address);
+  int accessI2c();
   void setPowMode(PowMode pow_mode);
-  void setOpMode(OpMode op_mode);
+  void setOprMode(OprMode opr_mode);
   //void writeReg(unsigned char reg_addr, unsigned char val);
   //void readReg(unsigned char reg_addr);
   void enumPorts();
@@ -154,7 +158,7 @@ public:
 
 private:
   PowMode pow_mode_;
-  OpMode op_mode_;
+  OpMode opr_mode_;
 };
 //} // End of namespace bno055
 
