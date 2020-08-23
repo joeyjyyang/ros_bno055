@@ -1,5 +1,5 @@
 #include "../include/bno055_driver.h"
-using namespace std;
+
 //namespace bno055
 //{
 Imu::Imu()
@@ -38,15 +38,15 @@ void Imu::setPowMode(PowMode pow_mode)
   }  
 }
 
-void Imu::setOpMode(OpMode op_mode)
+void Imu::setOprMode(OprMode opr_mode)
 {
   // Set operation mode.
   char write_buf[2];
   write_buf[0] = RegisterMap::OPR_MODE;
-  write_buf[1] = op_mode;
+  write_buf[1] = opr_mode;
   if (write(file_desc, write_buf, 2) != 2)
   {
-    std::cout << "ERROR: Failed to set operation mode to: " << op_mode << std::endl;
+    std::cout << "ERROR: Failed to set operation mode to: " << opr_mode << std::endl;
     perror("ERROR: ");
   }  
 }
