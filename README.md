@@ -2,7 +2,7 @@
 **A ROS driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout.**
 
 ## Overview
-
+Utilizes System Management Bus (SMBus), which is derived from the I2C serial bus protocol, for communication between the BNO055 sensor and the OS.
 ## Prerequisites
 ### Software
 - Ubiquity Robotics Raspberry Pi Image: https://downloads.ubiquityrobotics.com/pi.html
