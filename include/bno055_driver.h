@@ -11,17 +11,16 @@
 #include <linux/i2c-dev.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <cstdio>
 #include <fcntl.h>
 
 const char* I2C_BUS = "/dev/i2c-1";
-const int I2C_ADDRESS = 0x28;
+const __u8 I2C_ADDRESS = 0x28;
 
 int file_desc;
 
 //namespace bno055
 //{
-enum class RegisterMap : unsigned char
+enum class RegisterMap : __u8
 {
   // REGISTER_NAME = REGISTER_ADDRESS;
 
@@ -118,7 +117,7 @@ enum class RegisterMap : unsigned char
 };
 
 // PWR_MODE Register [0x3E]
-enum class PowMode : unsigned char
+enum class PowMode : __u8
 {
   NORMAL_MODE = 0x00,
   LOW_POWER_MODE = 0x01,
@@ -126,7 +125,7 @@ enum class PowMode : unsigned char
 };
 
 // OPR_MODE Register [0x3D]
-enum class OprMode : unsigned char
+enum class OprMode : __u8
 {
   CONFIG_MODE = 0x00,
   /* Non-Fusion Modes */
