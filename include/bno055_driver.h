@@ -148,7 +148,7 @@ class Imu
 {
 public:
   Imu();
-  int accessI2c();
+  int initI2c();
   void setPowMode(PowMode pow_mode);
   void setOprMode(OprMode opr_mode);
   void getAcc();
