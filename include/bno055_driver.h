@@ -149,8 +149,8 @@ class Imu
 public:
   Imu();
   int initI2c();
-  void setPowMode(PowMode pow_mode);
-  void setOprMode(OprMode opr_mode);
+  int setConfigMode();
+  int setImuMode();
   void getAcc();
   void getMag();
   void getGyr();
@@ -162,6 +162,7 @@ public:
 private:
   PowMode pow_mode_;
   OpMode opr_mode_;
+  int file_desc_;
 };
 //} // End of namespace bno055
 

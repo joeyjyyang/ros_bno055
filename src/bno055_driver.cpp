@@ -9,15 +9,14 @@ Imu::Imu()
 
 int Imu::initI2c()
 {
-  int file_desc;
-  if ((file_desc = open(I2C_BUS, O_RDWR)) < 0)
+  if ((file_desc_ = open(I2C_BUS, O_RDWR)) < 0)
   {
     printf("ERROR: Could not open I2C bus: %s.\n", I2C_BUS); 
     perror("ERROR: ");
     exit(-1);
   }
   
-  if (ioctl(file_desc, I2C_SLAVE, I2C_ADDRESS) < 0)
+  if (ioctl(file_desc_, I2C_SLAVE, I2C_ADDRESS) < 0)
   {
     printf("ERROR: Could not locate BNO055 sensor at address: %d.\n", I2C_ADDRESS);
     perror("ERROR: ");
@@ -26,30 +25,31 @@ int Imu::initI2c()
   return 1;
 }
 
-void Imu::setPowMode(PowMode pow_mode)
-{   
-  // Set power mode.
-  char write_buf[2];
-  write_buf[0] = RegisterMap::PWR_MODE;
-  write_buf[1] = pow_mode;
-  if (write(file_desc, write_buf, 2) != 2)
+int Imu::setConfigMode()
+{
+  if (i2c_smbus_write_byte_data(file_desc_, RegisterMap::OPR_MODE, OprMode::CONFIG_MODE) < 0)
   {
-    std::cout << "ERROR: Failed to set power mode to: " << pow_mode << std::endl;
+    printf("ERROR: Could not set operation mode to CONFIG");
     perror("ERROR: ");
-  }  
+    exit(-1);
+  } 
+  usleep(500000);
+  return 1;
 }
 
-void Imu::setOprMode(OprMode opr_mode)
+int Imu::setImuMode()
 {
-  // Set operation mode.
-  char write_buf[2];
-  write_buf[0] = RegisterMap::OPR_MODE;
-  write_buf[1] = opr_mode;
-  if (write(file_desc, write_buf, 2) != 2)
+  // Reset to config mode first.
+  setConfigMode();
+
+  if (i2c_smbus_write_byte_data(file_desc_, RegisterMap::OPR_MODE, OprMode::IMU) < 0)
   {
-    std::cout << "ERROR: Failed to set operation mode to: " << opr_mode << std::endl;
+    printf("ERROR: Could not set operation mode to IMU");
     perror("ERROR: ");
-  }  
+    exit(-1);
+  } 
+  usleep(500000);
+  return 1;
 }
 
 void Imu::getAcc()
