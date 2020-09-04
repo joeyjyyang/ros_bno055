@@ -151,17 +151,17 @@ public:
   int initI2c();
   int setConfigMode();
   int setImuMode();
-  void getAcc();
-  void getMag();
-  void getGyr();
-  void getEul();
-  void getQua(); 
+  int getAcc();
+  int getMag();
+  int getGyr();
+  int getEul();
+  int getQua(); 
   ~Imu();
   /* Create data structure to hold sensor data */
 
 private:
-  PowMode pow_mode_;
-  OpMode opr_mode_;
+  __u8 pow_mode_;
+  __u8 opr_mode_;
   int file_desc_;
 };
 //} // End of namespace bno055
