@@ -7,7 +7,7 @@ Imu::Imu()
   cout << "BNO055 Imu initialized." << endl;
 }
 
-int Imu::initI2c()
+int Imu::initI2c() : pow_mode_(PowMode::NORMAL_MODE), opr_mode(OprMode::CONFIG_MODE)
 {
   if ((file_desc_ = open(I2C_BUS, O_RDWR)) < 0)
   {
@@ -33,6 +33,7 @@ int Imu::setConfigMode()
     perror("ERROR: ");
     exit(-1);
   } 
+  opr_mode_ = OprMode::CONFIG_MODE;
   usleep(500000);
   return 1;
 }
@@ -48,6 +49,7 @@ int Imu::setImuMode()
     perror("ERROR: ");
     exit(-1);
   } 
+  opr_mode_ = OprMode::IMU;
   usleep(500000);
   return 1;
 }
