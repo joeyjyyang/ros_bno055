@@ -157,7 +157,33 @@ public:
   int getEul();
   int getQua(); 
   ~Imu();
-  /* Create data structure to hold sensor data */
+  /* Data structures to hold sensor data */
+  struct AccData {
+    double acc_x_;
+    double acc_y_;
+    double acc_z_;
+  };
+  struct MagData {
+    double mag_x_;
+    double mag_y_;
+    double mag_z_;
+  };
+  struct GyrData {
+    double gyr_x_;
+    double gyr_y_;
+    double gyr_z_;
+  };
+  struct EulData {
+    double eul_heading_;
+    double eul_roll_;
+    double eul_pitch_;
+  };
+  struct QuaData {
+    double qua_w_;
+    double qua_x_;
+    double qua_y_;
+    double qua_z_;
+  };
 
 private:
   __u8 pow_mode_;
