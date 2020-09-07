@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bno055_driver</name>
+cense>BSD</license><name>bno055_driver</name>
   <version>0.0.0</version>
   <description>A ROS driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout.</description>
 
@@ -14,9 +14,12 @@
   <url type="repository">https://github.com/joeyjyyang/bno055_driver</url>
   
   <buildtool_depend>catkin</buildtool_depend>
+
   <build_depend>roscpp</build_depend>
   <build_depend>message_generation</build_depend>
+  <build_depend>sensor_msgs</build_depend>
  
   <exec_depend>roscpp</exec_depend>
   <exec_depend>message_runtime</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
 </package>
