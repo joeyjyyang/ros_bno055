@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-cense>BSD</license><name>bno055_driver</name>
+  <name>bno055_driver</name>
   <version>0.0.0</version>
   <description>A ROS driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout.</description>
 
