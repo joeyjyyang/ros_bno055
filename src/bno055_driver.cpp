@@ -1,13 +1,11 @@
-#include "../include/bno055_driver.h"
-
-//namespace bno055
-//{
-Imu::Imu()
+#include "bno055_driver/bno055_driver.h"
+/*
+Imu::Imu() : pow_mode_(PowMode::NORMAL_MODE), opr_mode_(OprMode::CONFIG_MODE)
 {
-  cout << "BNO055 Imu initialized." << endl;
+  printf("BNO055 IMU driver initialized.");
 }
 
-int Imu::initI2c() : pow_mode_(PowMode::NORMAL_MODE), opr_mode(OprMode::CONFIG_MODE)
+int Imu::initI2c()
 {
   if ((file_desc_ = open(I2C_BUS, O_RDWR)) < 0)
   {
@@ -198,6 +196,6 @@ int Imu::getQua()
 
 Imu::~Imu()
 {
-  cout << "BNO055 Imu destroyed." << endl;
+  printf("BNO055 IMU driver destroyed.");  
 }
-
+*/

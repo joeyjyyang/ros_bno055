@@ -16,8 +16,6 @@
 const char* I2C_BUS = "/dev/i2c-1";
 const __u8 I2C_ADDRESS = 0x28;
 
-int file_desc;
-
 //namespace bno055
 //{
 enum class RegisterMap : __u8
@@ -184,7 +182,6 @@ public:
     double qua_y_;
     double qua_z_;
   };
-
 private:
   __u8 pow_mode_;
   __u8 opr_mode_;
