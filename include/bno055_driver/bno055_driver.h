@@ -13,11 +13,11 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 
-const char* I2C_BUS = "/dev/i2c-1";
-const __u8 I2C_ADDRESS = 0x28;
+extern const char* I2C_BUS;
+extern const __u8 I2C_ADDRESS;
 
-//namespace bno055
-//{
+namespace bno055
+{
 enum class RegisterMap : __u8
 {
   // REGISTER_NAME = REGISTER_ADDRESS;
@@ -142,10 +142,10 @@ enum class OprMode : __u8
   NDOF = 0x0C// FMC is turned ON
 };
 
-class Imu
+class Bno055Driver
 {
 public:
-  Imu();
+  Bno055Driver();
   int initI2c();
   int setConfigMode();
   int setImuMode();
@@ -154,7 +154,7 @@ public:
   int getGyr();
   int getEul();
   int getQua(); 
-  ~Imu();
+  ~Bno055Driver();
   /* Data structures to hold sensor data */
   struct AccData {
     double acc_x_;
@@ -183,10 +183,10 @@ public:
     double qua_z_;
   };
 private:
-  __u8 pow_mode_;
-  __u8 opr_mode_;
+  PowMode pow_mode_;
+  OprMode opr_mode_;
   int file_desc_;
 };
-//} // End of namespace bno055
+} // End of namespace bno055
 
 #endif // BNO055_DRIVER_H

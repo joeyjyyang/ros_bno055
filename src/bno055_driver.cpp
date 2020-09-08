@@ -1,17 +1,24 @@
 #include "bno055_driver/bno055_driver.h"
-/*
-Imu::Imu() : pow_mode_(PowMode::NORMAL_MODE), opr_mode_(OprMode::CONFIG_MODE)
+
+const char* I2C_BUS = "/dev/i2c-1";
+const __u8 I2C_ADDRESS = 0x28;
+
+bno055::Bno055Driver::Bno055Driver() : pow_mode_(bno055::PowMode::NORMAL_MODE), opr_mode_(bno055::OprMode::CONFIG_MODE)
 {
-  printf("BNO055 IMU driver initialized.");
+  printf("BNO055 IMU driver initialized.\n");
 }
 
-int Imu::initI2c()
+int bno055::Bno055Driver::initI2c()
 {
   if ((file_desc_ = open(I2C_BUS, O_RDWR)) < 0)
   {
     printf("ERROR: Could not open I2C bus: %s.\n", I2C_BUS); 
     perror("ERROR: ");
     exit(-1);
+  }
+  else 
+  {
+    printf("Opened I2C bus: %s.\n", I2C_BUS);
   }
   
   if (ioctl(file_desc_, I2C_SLAVE, I2C_ADDRESS) < 0)
@@ -20,42 +27,46 @@ int Imu::initI2c()
     perror("ERROR: ");
     exit(-1);
   }
+  else 
+  {
+    printf("Located BNO055 sensor at address: %d.\n", I2C_ADDRESS);
+  }
 
   return 1;
 }
-
-int Imu::setConfigMode()
+/*
+int bno055::Bno055Driver::setConfigMode()
 {
-  if (i2c_smbus_write_byte_data(file_desc_, RegisterMap::OPR_MODE, OprMode::CONFIG_MODE) < 0)
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::CONFIG_MODE) < 0)
   {
     printf("ERROR: Could not set operation mode to CONFIG");
     perror("ERROR: ");
     exit(-1);
   } 
-  opr_mode_ = OprMode::CONFIG_MODE;
+  opr_mode_ = bno055::OprMode::CONFIG_MODE;
   usleep(500000);
 
   return 1;
 }
 
-int Imu::setImuMode()
+int bno055::Bno055Driver::setImuMode()
 {
   // Reset to config mode first.
   setConfigMode();
 
-  if (i2c_smbus_write_byte_data(file_desc_, RegisterMap::OPR_MODE, OprMode::IMU) < 0)
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::IMU) < 0)
   {
     printf("ERROR: Could not set operation mode to IMU");
     perror("ERROR: ");
     exit(-1);
   } 
-  opr_mode_ = OprMode::IMU;
+  opr_mode_ = bno055::OprMode::IMU;
   usleep(500000);
 
   return 1;
 }
 
-int Imu::getAcc()
+int bno055::Bno055Driver::getAcc()
 {
   __u8 acc_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_X_LSB);
   __u8 acc_x_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_X_MSB);
@@ -82,7 +93,7 @@ int Imu::getAcc()
   return 1;
 }
 
-int Imu::getMag()
+int bno055::Bno055Driver::getMag()
 {
   __u8 mag_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_X_LSB);
   __u8 mag_x_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_X_MSB);
@@ -109,7 +120,7 @@ int Imu::getMag()
   return 1;
 }
 
-int Imu::getGyr()
+int bno055::Bno055Driver::getGyr()
 {
   __u8 gyr_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_X_LSB);
   __u8 gyr_x_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_X_MSB);
@@ -136,7 +147,7 @@ int Imu::getGyr()
   return 1;
 }
 
-int Imu::getEul()
+int bno055::Bno055Driver::getEul()
 {
   __u8 eul_heading_lsb = i2c_smbus_read_byte_data(file_desc_, EUL_HEADING_LSB);
   __u8 eul_heading_msb = i2c_smbus_read_byte_data(file_desc_, EUL_HEADING_MSB);
@@ -163,7 +174,7 @@ int Imu::getEul()
   return 1;
 }
 
-int Imu::getQua()
+int bno055::Bno055Driver::getQua()
 {
   __u8 qua_w_lsb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_W_LSB);
   __u8 qua_w_msb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_W_MSB);
@@ -193,9 +204,8 @@ int Imu::getQua()
 
   return 1;
 }
-
-Imu::~Imu()
-{
-  printf("BNO055 IMU driver destroyed.");  
-}
 */
+bno055::Bno055Driver::~Bno055Driver()
+{
+  printf("BNO055 IMU driver destroyed.\n");  
+}

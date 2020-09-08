@@ -8,12 +8,19 @@ namespace bno055
 class Bno055Node
 {
 public:
-	Bno055Node(const ros::NodeHandle& nh) : nh_(nh)
-  {}
-	~Bno055Node()
+  Bno055Node(const ros::NodeHandle& nh) : nh_(nh)
+  {
+    if (bno055_driver_.initI2c() < 0)
+    {
+      printf("Failed to initialize BNO055 Driver.\n");
+    }
+  }
+  
+  ~Bno055Node()
   {}
 private:
-	ros::NodeHandle nh_;
+  ros::NodeHandle nh_;
+  bno055::Bno055Driver bno055_driver_;
 };
 } // namespace bno055
 
