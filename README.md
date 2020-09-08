@@ -36,3 +36,9 @@ rospack profile
 roscore
 rosrun bno055_driver bno055_node
 ```
+
+## Contact
+- Author and Maintainer: Joey Yang
+- Email: joeyyang.ai@gmail.com
+- GitHub: https://github.com/joeyjyyang
+- LinkedIn: https://www.linkedin.com/in/joey-yang
