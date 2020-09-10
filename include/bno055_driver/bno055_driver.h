@@ -156,27 +156,27 @@ public:
   int getQua(); 
   ~Bno055Driver();
   /* Data structures to hold sensor data */
-  struct AccData {
+  struct AccData_ {
     double acc_x_;
     double acc_y_;
     double acc_z_;
-  };
-  struct MagData {
+  } acc_data_;
+  struct MagData_ {
     double mag_x_;
     double mag_y_;
     double mag_z_;
   };
-  struct GyrData {
+  struct GyrData_ {
     double gyr_x_;
     double gyr_y_;
     double gyr_z_;
   };
-  struct EulData {
+  struct EulData_ {
     double eul_heading_;
     double eul_roll_;
     double eul_pitch_;
   };
-  struct QuaData {
+  struct QuaData_ {
     double qua_w_;
     double qua_x_;
     double qua_y_;

@@ -73,15 +73,15 @@ int bno055::Bno055Driver::setImuMode()
 
   return 1;
 }
-/*
+
 int bno055::Bno055Driver::getAcc()
 {
-  __u8 acc_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_X_LSB);
-  __u8 acc_x_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_X_MSB);
-  __u8 acc_y_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_Y_LSB);
-  __u8 acc_y_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_Y_MSB);
-  __u8 acc_z_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_Z_LSB);
-  __u8 acc_z_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_Z_MSB);
+  __u8 acc_x_lsb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_X_LSB);
+  __u8 acc_x_msb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_X_MSB);
+  __u8 acc_y_lsb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Y_LSB);
+  __u8 acc_y_msb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Y_MSB);
+  __u8 acc_z_lsb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Z_LSB);
+  __u8 acc_z_msb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Z_MSB);
 
   if (acc_x_lsb < 0 || acc_x_msb < 0 || acc_y_lsb < 0 || acc_y_msb < 0 || acc_z_lsb < 0 || acc_z_msb < 0) {
     printf("ERROR: Could not read accelerometer data.");
@@ -94,13 +94,13 @@ int bno055::Bno055Driver::getAcc()
   __s16 buf_acc_y = ((__s16)acc_y_msb << 8) | acc_y_lsb;
   __s16 buf_acc_z = ((__s16)acc_z_msb << 8) | acc_z_lsb;
 
-  AccData::acc_x_ = buf_acc_x;
-  AccData::acc_y_ = buf_acc_y;
-  AccData::acc_z_ = buf_acc_z;
+  bno055::Bno055Driver::acc_data_.acc_x_ = buf_acc_x;
+  bno055::Bno055Driver::acc_data_.acc_y_ = buf_acc_y;
+  bno055::Bno055Driver::acc_data_.acc_z_ = buf_acc_z;
 
   return 1;
 }
-
+/*
 int bno055::Bno055Driver::getMag()
 {
   __u8 mag_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_X_LSB);

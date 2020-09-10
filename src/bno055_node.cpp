@@ -20,10 +20,23 @@ public:
     }
   }
   
+  void publishData()
+  {
+    if (bno055_driver_.getAcc() < 0)
+    {
+      printf("Failed to get accelerometer data.\n");
+    }
+    else 
+    {
+      printf("ACC X: %f, ACC Y: %f, ACC Z: %f\n", bno055_driver_.acc_data_.acc_x_, bno055_driver_.acc_data_.acc_y_, bno055_driver_.acc_data_.acc_z_);
+    }
+  }
+
   ~Bno055Node()
   {}
 private:
   ros::NodeHandle nh_;
+  ros::Publisher pub_;
   bno055::Bno055Driver bno055_driver_;
 };
 } // namespace bno055
@@ -33,7 +46,15 @@ int main(int argc, char* argv[])
   ros::init(argc, argv, "bno055_node");
   ros::NodeHandle nh("~");
   bno055::Bno055Node bno055_node(nh);
-  ros::spin();
+
+  ros::Rate loop_rate(10);
+
+  while (ros::ok())
+  {
+    bno055_node.publishData();
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
 
   return 0;
 }
