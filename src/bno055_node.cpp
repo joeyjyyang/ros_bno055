@@ -14,6 +14,10 @@ public:
     {
       printf("Failed to initialize BNO055 Driver.\n");
     }
+    if (bno055_driver_.setImuMode() < 0)
+    {
+      printf("Failed to set operation mode to IMU.\n");
+    }
   }
   
   ~Bno055Node()

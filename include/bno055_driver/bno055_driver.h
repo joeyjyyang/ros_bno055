@@ -18,7 +18,7 @@ extern const __u8 I2C_ADDRESS;
 
 namespace bno055
 {
-enum class RegisterMap : __u8
+enum RegisterMap
 {
   // REGISTER_NAME = REGISTER_ADDRESS;
 
@@ -115,7 +115,7 @@ enum class RegisterMap : __u8
 };
 
 // PWR_MODE Register [0x3E]
-enum class PowMode : __u8
+enum PowMode
 {
   NORMAL_MODE = 0x00,
   LOW_POWER_MODE = 0x01,
@@ -123,7 +123,7 @@ enum class PowMode : __u8
 };
 
 // OPR_MODE Register [0x3D]
-enum class OprMode : __u8
+enum OprMode
 {
   CONFIG_MODE = 0x00,
   /* Non-Fusion Modes */

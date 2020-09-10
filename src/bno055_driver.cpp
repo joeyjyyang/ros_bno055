@@ -23,18 +23,18 @@ int bno055::Bno055Driver::initI2c()
   
   if (ioctl(file_desc_, I2C_SLAVE, I2C_ADDRESS) < 0)
   {
-    printf("ERROR: Could not locate BNO055 sensor at address: %d.\n", I2C_ADDRESS);
+    printf("ERROR: Could not locate BNO055 sensor at address: 0x%02X.\n", I2C_ADDRESS);
     perror("ERROR: ");
     exit(-1);
   }
   else 
   {
-    printf("Located BNO055 sensor at address: %d.\n", I2C_ADDRESS);
+    printf("Located BNO055 sensor at address: 0x%02X.\n", I2C_ADDRESS);
   }
 
   return 1;
 }
-/*
+
 int bno055::Bno055Driver::setConfigMode()
 {
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::CONFIG_MODE) < 0)
@@ -42,6 +42,10 @@ int bno055::Bno055Driver::setConfigMode()
     printf("ERROR: Could not set operation mode to CONFIG");
     perror("ERROR: ");
     exit(-1);
+  }
+  else 
+  {
+    printf("Set operation mode to CONFIG: 0x%02X.\n", bno055::OprMode::CONFIG_MODE);
   } 
   opr_mode_ = bno055::OprMode::CONFIG_MODE;
   usleep(500000);
@@ -60,12 +64,16 @@ int bno055::Bno055Driver::setImuMode()
     perror("ERROR: ");
     exit(-1);
   } 
+  else 
+  {
+    printf("Set operation mode to IMU: 0x%02X.\n", bno055::OprMode::IMU);
+  } 
   opr_mode_ = bno055::OprMode::IMU;
   usleep(500000);
 
   return 1;
 }
-
+/*
 int bno055::Bno055Driver::getAcc()
 {
   __u8 acc_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::ACC_DATA_X_LSB);
