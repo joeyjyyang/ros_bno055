@@ -1,5 +1,5 @@
 # bno055_driver
-**A ROS driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout.**
+**A ROS package containing a hardware driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout and a ROS node wrapper that exposes the sensor driver to the ROS ecosystem.**
 
 ## Overview
 Utilizes System Management Bus (SMBus), which is derived from the I2C serial bus protocol, for communication between the BNO055 sensor and the OS.
