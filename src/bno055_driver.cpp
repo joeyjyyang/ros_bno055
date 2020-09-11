@@ -100,7 +100,7 @@ int bno055::Bno055Driver::getAcc()
 
   return 1;
 }
-/*
+
 int bno055::Bno055Driver::getMag()
 {
   __u8 mag_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_X_LSB);
@@ -121,9 +121,9 @@ int bno055::Bno055Driver::getMag()
   __s16 buf_mag_y = ((__s16)mag_y_msb << 8) | mag_y_lsb;
   __s16 buf_mag_z = ((__s16)mag_z_msb << 8) | mag_z_lsb;
 
-  MagData::mag_x_ = buf_mag_x / 1.6;
-  MagData::mag_y_ = buf_mag_y / 1.6;
-  MagData::mag_z_ = buf_mag_z / 1.6;
+  bno055::Bno055Driver::mag_data_.mag_x_ = buf_mag_x / 1.6;
+  bno055::Bno055Driver::mag_data_.mag_y_ = buf_mag_y / 1.6;
+  bno055::Bno055Driver::mag_data_.mag_z_ = buf_mag_z / 1.6;
 
   return 1;
 }
@@ -148,9 +148,9 @@ int bno055::Bno055Driver::getGyr()
   __s16 buf_gyr_y = ((__s16)gyr_y_msb << 8) | gyr_y_lsb;
   __s16 buf_gyr_z = ((__s16)gyr_z_msb << 8) | gyr_z_lsb;
 
-  GyrData::gyr_x_ = buf_gyr_x / 16.0;
-  GyrData::gyr_y_ = buf_gyr_y / 16.0;
-  GyrData::gyr_z_ = buf_gyr_z / 16.0;
+  bno055::Bno055Driver::gyr_data_.gyr_x_ = buf_gyr_x / 16.0;
+  bno055::Bno055Driver::gyr_data_.gyr_y_ = buf_gyr_y / 16.0;
+  bno055::Bno055Driver::gyr_data_.gyr_z_ = buf_gyr_z / 16.0;
 
   return 1;
 }
@@ -175,9 +175,9 @@ int bno055::Bno055Driver::getEul()
   __s16 buf_eul_roll = ((__s16)eul_roll_msb << 8) | eul_roll_lsb;
   __s16 buf_eul_pitch = ((__s16)eul_pitch_msb << 8) | eul_pitch_lsb;
   
-  EulData::eul_heading_ = buf_eul_heading / 16.0;
-  EulData::eul_roll_ = buf_eul_roll / 16.0;
-  EulData::eul_pitch_ = buf_eul_pitch / 16.0;
+  bno055::Bno055Driver::eul_data_.eul_heading_ = buf_eul_heading / 16.0;
+  bno055::Bno055Driver::eul_data_.eul_roll_ = buf_eul_roll / 16.0;
+  bno055::Bno055Driver::eul_data_.eul_pitch_ = buf_eul_pitch / 16.0;
 
   return 1;
 }
@@ -205,14 +205,14 @@ int bno055::Bno055Driver::getQua()
   __s16 buf_qua_y = ((__s16)qua_y_msb << 8) | qua_y_lsb;
   __s16 buf_qua_z = ((__s16)qua_z_msb << 8) | qua_z_lsb;
 
-  QuaData::qua_w_ = buf_qua_w / 16384.0;
-  QuaData::qua_x_ = buf_qua_x / 16384.0;
-  QuaData::qua_y_ = buf_qua_y / 16384.0;
-  QuaData::qua_z_ = buf_qua_z / 16384.0;
+  bno055::Bno055Driver::qua_data_.qua_w_ = buf_qua_w / 16384.0;
+  bno055::Bno055Driver::qua_data_.qua_x_ = buf_qua_x / 16384.0;
+  bno055::Bno055Driver::qua_data_.qua_y_ = buf_qua_y / 16384.0;
+  bno055::Bno055Driver::qua_data_.qua_z_ = buf_qua_z / 16384.0;
 
   return 1;
 }
-*/
+
 bno055::Bno055Driver::~Bno055Driver()
 {
   printf("BNO055 IMU driver destroyed.\n");  

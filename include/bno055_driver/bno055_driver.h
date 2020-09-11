@@ -165,23 +165,23 @@ public:
     double mag_x_;
     double mag_y_;
     double mag_z_;
-  };
+  } mag_data_;
   struct GyrData_ {
     double gyr_x_;
     double gyr_y_;
     double gyr_z_;
-  };
+  } gyr_data_;
   struct EulData_ {
     double eul_heading_;
     double eul_roll_;
     double eul_pitch_;
-  };
+  } eul_data_;
   struct QuaData_ {
     double qua_w_;
     double qua_x_;
     double qua_y_;
     double qua_z_;
-  };
+  } qua_data_;
 private:
   PowMode pow_mode_;
   OprMode opr_mode_;
