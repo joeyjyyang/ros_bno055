@@ -2,7 +2,7 @@
 <package format="2">
   <name>bno055_driver</name>
   <version>0.0.0</version>
-  <description>A ROS package containing a hardware driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout and a ROS node wrapper that exposes the sensor driver to the ROS ecosystem.</description>
+  <description>A ROS package containing a Linux hardware driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout and a ROS node wrapper that exposes the sensor driver to the ROS ecosystem.</description>
 
   <maintainer email="joeyyang.ai@gmail.com">Joey Yang</maintainer>
   <maintainer email="caoy15@mcmaster.ca">Henry Cao</maintainer>

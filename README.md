@@ -1,8 +1,9 @@
 # bno055_driver
-**A ROS package containing a hardware driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout and a ROS node wrapper that exposes the sensor driver to the ROS ecosystem.**
+**A ROS package containing a Linux hardware driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout and a ROS node wrapper that exposes the sensor driver to the ROS ecosystem.**
 
 ## Overview
-Utilizes System Management Bus (SMBus), which is derived from the I2C serial bus protocol, for communication between the BNO055 sensor and the OS.
+The hardware driver for the sensor is ROS-agnostic, meaning it provides a clean functional Linux interface to the sensor that can be used on any Linux system independent of ROS. The driver utilizes System Management Bus (SMBus), which is derived from the I2C serial bus protocol, for communication between the BNO055 sensor and the OS. Additionally, the ROS node simply wraps around the driver and connects the sensor data to ROS topics.
+
 ## Prerequisites
 ### Software
 - Ubiquity Robotics Raspberry Pi Image: https://downloads.ubiquityrobotics.com/pi.html
