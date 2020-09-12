@@ -2,6 +2,7 @@
 
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
+#include <sensor_msgs/MagneticField.h>
 
 namespace bno055
 {
@@ -10,6 +11,7 @@ class Bno055Node
 public:
   Bno055Node(const ros::NodeHandle& nh) : nh_(nh)
   {
+    /* Setup BNO055 */
     if (bno055_driver_.initI2c() < 0)
     {
       printf("Failed to initialize BNO055 Driver.\n");
@@ -18,6 +20,10 @@ public:
     {
       printf("Failed to set operation mode to IMU.\n");
     }
+    
+    /* Initialize ROS publishers */
+    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
+    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
   }
   
   void publishData()
@@ -73,8 +79,13 @@ public:
   ~Bno055Node()
   {}
 private:
+  /* ROS */
   ros::NodeHandle nh_;
-  ros::Publisher pub_;
+  ros::Publisher imu_pub_;
+  ros::Publisher mag_pub_;
+  sensor_msgs::Imu imu_msg_;
+  sensor_msgs::MagneticField mag_msg_;
+  /* BNO055 */
   bno055::Bno055Driver bno055_driver_;
 };
 } // namespace bno055
