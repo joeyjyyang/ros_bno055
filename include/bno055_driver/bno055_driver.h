@@ -142,6 +142,38 @@ enum OprMode
   NDOF = 0x0C// FMC is turned ON
 };
 
+/* Data structures to hold sensor data */
+struct AccData {
+  __s16 acc_x;
+  __s16 acc_y;
+  __s16 acc_z;
+};
+
+struct MagData {
+  __s16 mag_x;
+  __s16 mag_y;
+  __s16 mag_z;
+};
+
+struct GyrData {
+  __s16 gyr_x;
+  __s16 gyr_y;
+  __s16 gyr_z;
+};
+
+struct EulData {
+  __s16 eul_heading;
+  __s16 eul_roll;
+  __s16 eul_pitch;
+};
+
+struct QuaData {
+  __s16 qua_w;
+  __s16 qua_x;
+  __s16 qua_y;
+  __s16 qua_z;
+};
+
 class Bno055Driver
 {
 public:
@@ -155,33 +187,25 @@ public:
   int getEul();
   int getQua(); 
   ~Bno055Driver();
-  /* Data structures to hold sensor data */
-  struct AccData_ {
+  /* Data structure to hold sensor data */
+  struct Data_ {
     double acc_x_;
     double acc_y_;
     double acc_z_;
-  } acc_data_;
-  struct MagData_ {
     double mag_x_;
     double mag_y_;
     double mag_z_;
-  } mag_data_;
-  struct GyrData_ {
     double gyr_x_;
     double gyr_y_;
     double gyr_z_;
-  } gyr_data_;
-  struct EulData_ {
     double eul_heading_;
     double eul_roll_;
     double eul_pitch_;
-  } eul_data_;
-  struct QuaData_ {
     double qua_w_;
     double qua_x_;
     double qua_y_;
     double qua_z_;
-  } qua_data_;
+  } data_;
 private:
   PowMode pow_mode_;
   OprMode opr_mode_;

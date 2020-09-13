@@ -11,7 +11,6 @@ class Bno055Node
 public:
   Bno055Node(const ros::NodeHandle& nh) : nh_(nh)
   {
-    /* Setup BNO055 */
     if (bno055_driver_.initI2c() < 0)
     {
       printf("Failed to initialize BNO055 Driver.\n");
@@ -20,8 +19,7 @@ public:
     {
       printf("Failed to set operation mode to IMU.\n");
     }
-    
-    /* Initialize ROS publishers */
+     
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
   }
@@ -34,7 +32,7 @@ public:
     }
     else 
     {
-      printf("ACC X: %f, ACC Y: %f, ACC Z: %f\n", bno055_driver_.acc_data_.acc_x_, bno055_driver_.acc_data_.acc_y_, bno055_driver_.acc_data_.acc_z_);
+      printf("ACC X: %f, ACC Y: %f, ACC Z: %f\n", bno055_driver_.data_.acc_x_, bno055_driver_.data_.acc_y_, bno055_driver_.data_.acc_z_);
     }
     
     if (bno055_driver_.getMag() < 0)
@@ -43,7 +41,7 @@ public:
     }
     else 
     {
-      printf("MAG X: %f, MAG Y: %f, MAG Z: %f\n", bno055_driver_.mag_data_.mag_x_, bno055_driver_.mag_data_.mag_y_, bno055_driver_.mag_data_.mag_z_);
+      printf("MAG X: %f, MAG Y: %f, MAG Z: %f\n", bno055_driver_.data_.mag_x_, bno055_driver_.data_.mag_y_, bno055_driver_.data_.mag_z_);
     }
     
     if (bno055_driver_.getGyr() < 0)
@@ -52,7 +50,7 @@ public:
     }
     else 
     {
-      printf("GYR X: %f, GYR Y: %f, GYR Z: %f\n", bno055_driver_.gyr_data_.gyr_x_, bno055_driver_.gyr_data_.gyr_y_, bno055_driver_.gyr_data_.gyr_z_);
+      printf("GYR X: %f, GYR Y: %f, GYR Z: %f\n", bno055_driver_.data_.gyr_x_, bno055_driver_.data_.gyr_y_, bno055_driver_.data_.gyr_z_);
     }
     
     if (bno055_driver_.getEul() < 0)
@@ -61,7 +59,7 @@ public:
     }
     else 
     {
-      printf("EUL HEADING: %f, EUL ROLL: %f, EUL PITCH: %f\n", bno055_driver_.eul_data_.eul_heading_, bno055_driver_.eul_data_.eul_roll_, bno055_driver_.eul_data_.eul_pitch_);
+      printf("EUL HEADING: %f, EUL ROLL: %f, EUL PITCH: %f\n", bno055_driver_.data_.eul_heading_, bno055_driver_.data_.eul_roll_, bno055_driver_.data_.eul_pitch_);
     }
 
     if (bno055_driver_.getQua() < 0)
@@ -70,7 +68,7 @@ public:
     }
     else 
     {
-      printf("QUA W: %f, QUA X: %f, QUA Y: %f, QUA Z: %f.\n", bno055_driver_.qua_data_.qua_w_, bno055_driver_.qua_data_.qua_x_, bno055_driver_.qua_data_.qua_y_, bno055_driver_.qua_data_.qua_z_);
+      printf("QUA W: %f, QUA X: %f, QUA Y: %f, QUA Z: %f.\n", bno055_driver_.data_.qua_w_, bno055_driver_.data_.qua_x_, bno055_driver_.data_.qua_y_, bno055_driver_.data_.qua_z_);
     }
 
     printf("---------------------------------------\n"); 

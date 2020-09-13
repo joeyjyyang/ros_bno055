@@ -76,139 +76,91 @@ int bno055::Bno055Driver::setImuMode()
 
 int bno055::Bno055Driver::getAcc()
 {
-  __u8 acc_x_lsb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_X_LSB);
-  __u8 acc_x_msb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_X_MSB);
-  __u8 acc_y_lsb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Y_LSB);
-  __u8 acc_y_msb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Y_MSB);
-  __u8 acc_z_lsb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Z_LSB);
-  __u8 acc_z_msb = i2c_smbus_read_byte_data(file_desc_, bno055::RegisterMap::ACC_DATA_Z_MSB);
+  bno055::AccData acc_data;
 
-  if (acc_x_lsb < 0 || acc_x_msb < 0 || acc_y_lsb < 0 || acc_y_msb < 0 || acc_z_lsb < 0 || acc_z_msb < 0) {
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::ACC_DATA_X_LSB, 0x06, (__u8*)&acc_data) != 0x06) 
+  {
     printf("ERROR: Could not read accelerometer data.");
     perror("ERROR: ");
     exit(-1);
-  } 
-
-  // Calculate decimal value from LSB and MSB.
-  __s16 buf_acc_x = ((__s16)acc_x_msb << 8) | acc_x_lsb;
-  __s16 buf_acc_y = ((__s16)acc_y_msb << 8) | acc_y_lsb;
-  __s16 buf_acc_z = ((__s16)acc_z_msb << 8) | acc_z_lsb;
-
-  bno055::Bno055Driver::acc_data_.acc_x_ = buf_acc_x;
-  bno055::Bno055Driver::acc_data_.acc_y_ = buf_acc_y;
-  bno055::Bno055Driver::acc_data_.acc_z_ = buf_acc_z;
+  }
+ 
+  bno055::Bno055Driver::data_.acc_x_ = (double)acc_data.acc_x / 100.0;
+  bno055::Bno055Driver::data_.acc_y_ = (double)acc_data.acc_y / 100.0;
+  bno055::Bno055Driver::data_.acc_z_ = (double)acc_data.acc_z / 100.0;
 
   return 1;
 }
 
 int bno055::Bno055Driver::getMag()
-{
-  __u8 mag_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_X_LSB);
-  __u8 mag_x_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_X_MSB);
-  __u8 mag_y_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_Y_LSB);
-  __u8 mag_y_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_Y_MSB);
-  __u8 mag_z_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_Z_LSB);
-  __u8 mag_z_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::MAG_DATA_Z_MSB);
+{ 
+  bno055::MagData mag_data;
 
-  if (mag_x_lsb < 0 || mag_x_msb < 0 || mag_y_lsb < 0 || mag_y_msb < 0 || mag_z_lsb < 0 || mag_z_msb < 0) {
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::MAG_DATA_X_LSB, 0x06, (__u8*)&mag_data) != 0x06) 
+  {
     printf("ERROR: Could not read magnetometer data.");
     perror("ERROR: ");
-    exit(1);
-  } 
-
-  // Calculate decimal value from LSB and MSB.
-  __s16 buf_mag_x = ((__s16)mag_x_msb << 8) | mag_x_lsb;
-  __s16 buf_mag_y = ((__s16)mag_y_msb << 8) | mag_y_lsb;
-  __s16 buf_mag_z = ((__s16)mag_z_msb << 8) | mag_z_lsb;
-
-  bno055::Bno055Driver::mag_data_.mag_x_ = buf_mag_x / 1.6;
-  bno055::Bno055Driver::mag_data_.mag_y_ = buf_mag_y / 1.6;
-  bno055::Bno055Driver::mag_data_.mag_z_ = buf_mag_z / 1.6;
+    exit(-1);
+  }
+  
+  bno055::Bno055Driver::data_.mag_x_ = (double)mag_data.mag_x / 16.0;
+  bno055::Bno055Driver::data_.mag_y_ = (double)mag_data.mag_y / 16.0;
+  bno055::Bno055Driver::data_.mag_z_ = (double)mag_data.mag_z / 16.0;
 
   return 1;
 }
 
 int bno055::Bno055Driver::getGyr()
 {
-  __u8 gyr_x_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_X_LSB);
-  __u8 gyr_x_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_X_MSB);
-  __u8 gyr_y_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_Y_LSB);
-  __u8 gyr_y_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_Y_MSB);
-  __u8 gyr_z_lsb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_Z_LSB);
-  __u8 gyr_z_msb = i2c_smbus_read_byte_data(file_desc_, RegisterMap::GYR_DATA_Z_MSB);
+  bno055::GyrData gyr_data;
 
-  if (gyr_x_lsb < 0 || gyr_x_msb < 0 || gyr_y_lsb < 0 || gyr_y_msb < 0 || gyr_z_lsb < 0 || gyr_z_msb < 0) {
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::GYR_DATA_X_LSB, 0x06, (__u8*)&gyr_data) != 0x06) 
+  {
     printf("ERROR: Could not read gyroscope data.");
     perror("ERROR: ");
-    exit(1);
-  } 
-
-  // Calculate decimal value from LSB and MSB.
-  __s16 buf_gyr_x = ((__s16)gyr_x_msb << 8) | gyr_x_lsb;
-  __s16 buf_gyr_y = ((__s16)gyr_y_msb << 8) | gyr_y_lsb;
-  __s16 buf_gyr_z = ((__s16)gyr_z_msb << 8) | gyr_z_lsb;
-
-  bno055::Bno055Driver::gyr_data_.gyr_x_ = buf_gyr_x / 16.0;
-  bno055::Bno055Driver::gyr_data_.gyr_y_ = buf_gyr_y / 16.0;
-  bno055::Bno055Driver::gyr_data_.gyr_z_ = buf_gyr_z / 16.0;
+    exit(-1);
+  }
+  
+  bno055::Bno055Driver::data_.gyr_x_ = (double)gyr_data.gyr_x / 900.0;
+  bno055::Bno055Driver::data_.gyr_y_ = (double)gyr_data.gyr_y / 900.0;
+  bno055::Bno055Driver::data_.gyr_z_ = (double)gyr_data.gyr_z / 900.0;
 
   return 1;
 }
 
 int bno055::Bno055Driver::getEul()
 {
-  __u8 eul_heading_lsb = i2c_smbus_read_byte_data(file_desc_, EUL_HEADING_LSB);
-  __u8 eul_heading_msb = i2c_smbus_read_byte_data(file_desc_, EUL_HEADING_MSB);
-  __u8 eul_roll_lsb = i2c_smbus_read_byte_data(file_desc_, EUL_ROLL_LSB);
-  __u8 eul_roll_msb = i2c_smbus_read_byte_data(file_desc_, EUL_ROLL_MSB);
-  __u8 eul_pitch_lsb = i2c_smbus_read_byte_data(file_desc_, EUL_PITCH_LSB);
-  __u8 eul_pitch_msb = i2c_smbus_read_byte_data(file_desc_, EUL_PITCH_MSB);
+  bno055::EulData eul_data;
 
-  if (eul_heading_lsb < 0 || eul_heading_msb < 0 || eul_roll_lsb < 0 || eul_roll_msb < 0 || eul_pitch_lsb < 0 || eul_pitch_msb < 0) {
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::EUL_HEADING_LSB, 0x06, (__u8*)&eul_data) != 0x06)
+  {
     printf("ERROR: Could not read euler angles data.");
     perror("ERROR: ");
-    exit(1);
-  } 
-
-  // Calculate decimal value from LSB and MSB.
-  __s16 buf_eul_heading = ((__s16)eul_heading_msb << 8) | eul_heading_lsb;
-  __s16 buf_eul_roll = ((__s16)eul_roll_msb << 8) | eul_roll_lsb;
-  __s16 buf_eul_pitch = ((__s16)eul_pitch_msb << 8) | eul_pitch_lsb;
+    exit(-1);
+  }
   
-  bno055::Bno055Driver::eul_data_.eul_heading_ = buf_eul_heading / 16.0;
-  bno055::Bno055Driver::eul_data_.eul_roll_ = buf_eul_roll / 16.0;
-  bno055::Bno055Driver::eul_data_.eul_pitch_ = buf_eul_pitch / 16.0;
+  bno055::Bno055Driver::data_.eul_heading_ = (double)eul_data.eul_heading / 16.0;
+  bno055::Bno055Driver::data_.eul_roll_ = (double)eul_data.eul_roll / 16.0;
+  bno055::Bno055Driver::data_.eul_pitch_ = (double)eul_data.eul_pitch / 16.0;
 
   return 1;
 }
 
 int bno055::Bno055Driver::getQua()
 {
-  __u8 qua_w_lsb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_W_LSB);
-  __u8 qua_w_msb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_W_MSB);
-  __u8 qua_x_lsb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_X_LSB);
-  __u8 qua_x_msb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_X_MSB);
-  __u8 qua_y_lsb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_Y_LSB);
-  __u8 qua_y_msb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_Y_MSB);
-  __u8 qua_z_lsb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_Z_LSB);
-  __u8 qua_z_msb = i2c_smbus_read_byte_data(file_desc_, QUA_DATA_Z_MSB);
+  bno055::QuaData qua_data;
 
-  if (qua_w_lsb < 0 || qua_w_msb < 0 || qua_x_lsb < 0 || qua_x_msb < 0 || qua_y_lsb < 0 || qua_y_msb < 0 || qua_z_lsb < 0 || qua_z_msb < 0) {
-    printf("ERROR: Could not read quaternion data.");
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::QUA_DATA_W_LSB, 0x08, (__u8*)&qua_data) != 0x08)
+  {
+    printf("ERROR: Could not read quaternions data.");
     perror("ERROR: ");
-    exit(1);
-  } 
-
-  // Calculate decimal value from LSB and MSB.
-  __s16 buf_qua_w = ((__s16)qua_w_msb << 8) | qua_w_lsb;
-  __s16 buf_qua_x = ((__s16)qua_x_msb << 8) | qua_x_lsb;
-  __s16 buf_qua_y = ((__s16)qua_y_msb << 8) | qua_y_lsb;
-  __s16 buf_qua_z = ((__s16)qua_z_msb << 8) | qua_z_lsb;
-
-  bno055::Bno055Driver::qua_data_.qua_w_ = buf_qua_w / 16384.0;
-  bno055::Bno055Driver::qua_data_.qua_x_ = buf_qua_x / 16384.0;
-  bno055::Bno055Driver::qua_data_.qua_y_ = buf_qua_y / 16384.0;
-  bno055::Bno055Driver::qua_data_.qua_z_ = buf_qua_z / 16384.0;
+    exit(-1);
+  }
+  
+  bno055::Bno055Driver::data_.qua_w_ = (double)qua_data.qua_w / 16384.0;
+  bno055::Bno055Driver::data_.qua_x_ = (double)qua_data.qua_x / 16384.0;
+  bno055::Bno055Driver::data_.qua_y_ = (double)qua_data.qua_y / 16384.0;
+  bno055::Bno055Driver::data_.qua_z_ = (double)qua_data.qua_z / 16384.0;
 
   return 1;
 }
