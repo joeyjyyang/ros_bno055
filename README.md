@@ -49,4 +49,5 @@ rosrun bno055_driver bno055_node
 - Validate sensor values (against other drivers).
 - Create launch file.
 - Add instructions on resolving I2C clock stretching issue for Raspberry Pi.
+- Use ROS_INFO instead of printf to log messages in node.
 - Complete README.
