@@ -45,7 +45,6 @@ rosrun bno055_driver bno055_node
 - LinkedIn: https://www.linkedin.com/in/joey-yang
 
 ## To Do:
-- Fix large value error with last register of each data type.
 - Validate sensor values (against other drivers).
 - Create launch file.
 - Add instructions on resolving I2C clock stretching issue for Raspberry Pi.
