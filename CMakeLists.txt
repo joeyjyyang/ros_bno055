@@ -29,10 +29,10 @@ add_library(${PROJECT_NAME}
 )
 
 add_executable(bno055_node src/bno055_node.cpp src/bno055_driver.cpp)
+
 target_link_libraries(bno055_node
   ${catkin_LIBRARIES}
 )
-add_dependencies(bno055_node bno055_driver_generate_messages_cpp)
 
 install(DIRECTORY include/${PROJECT_NAME}/
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
