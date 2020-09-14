@@ -44,6 +44,5 @@ roslaunch bno055_driver bno055_imu.launch
 - LinkedIn: https://www.linkedin.com/in/joey-yang
 
 ## To Do:
-- Create launch file.
 - Add instructions on resolving I2C clock stretching issue for Raspberry Pi.
 - Complete README.
