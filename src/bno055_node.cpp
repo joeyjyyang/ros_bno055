@@ -15,9 +15,13 @@ public:
     {
       ROS_ERROR("Failed to initialize BNO055 Driver.");
     }
-    if (bno055_driver_.setImuMode() < 0)
+    /*if (bno055_driver_.setImuMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to IMU.");
+    }*/
+    if (bno055_driver_.setNdofMode() < 0)
+    {
+      ROS_ERROR("Failed to set operation mode to NDOF.");
     }
      
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
@@ -26,10 +30,10 @@ public:
   
   void publishData()
   {
-    if (bno055_driver_.getAcc() < 0)
+    /*if (bno055_driver_.getAcc() < 0)
     {
       ROS_ERROR("Failed to get accelerometer data.");
-    }
+    }*/
     if (bno055_driver_.getMag() < 0)
     {
       ROS_ERROR("Failed to get magnometer data.");
@@ -45,6 +49,10 @@ public:
     if (bno055_driver_.getQua() < 0)
     {
       ROS_ERROR("Failed to get quaternions data.");
+    } 
+    if (bno055_driver_.getLia() < 0)
+    {
+      ROS_ERROR("Failed to get linear acceleration data.");
     }
     
     ros::Time time_stamp = ros::Time::now();
@@ -60,9 +68,9 @@ public:
     imu_msg_.angular_velocity.y = bno055_driver_.data_.gyr_y_;
     imu_msg_.angular_velocity.z = bno055_driver_.data_.gyr_z_;
 
-    imu_msg_.linear_acceleration.x = bno055_driver_.data_.acc_x_;
-    imu_msg_.linear_acceleration.y = bno055_driver_.data_.acc_y_;
-    imu_msg_.linear_acceleration.z = bno055_driver_.data_.acc_z_;
+    imu_msg_.linear_acceleration.x = bno055_driver_.data_.lia_x_;
+    imu_msg_.linear_acceleration.y = bno055_driver_.data_.lia_y_;
+    imu_msg_.linear_acceleration.z = bno055_driver_.data_.lia_z_;
     
     mag_msg_.header.stamp = time_stamp;
     

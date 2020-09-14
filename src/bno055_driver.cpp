@@ -74,6 +74,27 @@ int bno055::Bno055Driver::setImuMode()
   return 1;
 }
 
+int bno055::Bno055Driver::setNdofMode()
+{
+  // Reset to config mode first.
+  setConfigMode();
+
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::NDOF) < 0)
+  {
+    printf("ERROR: Could not set operation mode to NDOF");
+    perror("ERROR: ");
+    exit(-1);
+  } 
+  else 
+  {
+    printf("Set operation mode to NDOF: 0x%02X.\n", bno055::OprMode::NDOF);
+  } 
+  opr_mode_ = bno055::OprMode::NDOF;
+  usleep(500000);
+
+  return 1;
+}
+
 int bno055::Bno055Driver::getAcc()
 {
   bno055::AccData acc_data;
@@ -161,6 +182,24 @@ int bno055::Bno055Driver::getQua()
   bno055::Bno055Driver::data_.qua_x_ = (double)qua_data.qua_x / 16384.0;
   bno055::Bno055Driver::data_.qua_y_ = (double)qua_data.qua_y / 16384.0;
   bno055::Bno055Driver::data_.qua_z_ = (double)qua_data.qua_z / 16384.0;
+
+  return 1;
+}
+
+int bno055::Bno055Driver::getLia()
+{
+  bno055::LiaData lia_data;
+
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::LIA_DATA_X_LSB, 0x06, (__u8*)&lia_data) != 0x06) 
+  {
+    printf("ERROR: Could not read linear acceleration data.");
+    perror("ERROR: ");
+    exit(-1);
+  }
+ 
+  bno055::Bno055Driver::data_.lia_x_ = (double)lia_data.lia_x / 100.0;
+  bno055::Bno055Driver::data_.lia_y_ = (double)lia_data.lia_y / 100.0;
+  bno055::Bno055Driver::data_.lia_z_ = (double)lia_data.lia_z / 100.0;
 
   return 1;
 }

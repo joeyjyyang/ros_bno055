@@ -174,6 +174,12 @@ struct QuaData {
   __s16 qua_z;
 };
 
+struct LiaData {
+  __s16 lia_x;
+  __s16 lia_y;
+  __s16 lia_z;
+};
+
 class Bno055Driver
 {
 public:
@@ -181,11 +187,13 @@ public:
   int initI2c();
   int setConfigMode();
   int setImuMode();
+  int setNdofMode();
   int getAcc();
   int getMag();
   int getGyr();
   int getEul();
-  int getQua(); 
+  int getQua();
+  int getLia(); 
   ~Bno055Driver();
   /* Data structure to hold sensor data */
   struct Data_ {
@@ -205,6 +213,9 @@ public:
     double qua_x_;
     double qua_y_;
     double qua_z_;
+    double lia_x_;
+    double lia_y_;
+    double lia_z_;
   } data_;
 private:
   PowMode pow_mode_;
