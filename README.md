@@ -34,8 +34,7 @@ rospack profile
 ## Usage
 ### Example
 ```
-roscore
-rosrun bno055_driver bno055_node
+roslaunch bno055_driver bno055_imu.launch
 ```
 
 ## Contact
@@ -45,8 +44,6 @@ rosrun bno055_driver bno055_node
 - LinkedIn: https://www.linkedin.com/in/joey-yang
 
 ## To Do:
-- Validate sensor values (against other drivers).
 - Create launch file.
 - Add instructions on resolving I2C clock stretching issue for Raspberry Pi.
-- Use ROS_INFO instead of printf to log messages in node.
 - Complete README.
