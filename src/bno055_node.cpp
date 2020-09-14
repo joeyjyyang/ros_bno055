@@ -13,11 +13,11 @@ public:
   {
     if (bno055_driver_.initI2c() < 0)
     {
-      printf("Failed to initialize BNO055 Driver.\n");
+      ROS_ERROR("Failed to initialize BNO055 Driver.");
     }
     if (bno055_driver_.setImuMode() < 0)
     {
-      printf("Failed to set operation mode to IMU.\n");
+      ROS_ERROR("Failed to set operation mode to IMU.");
     }
      
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
@@ -28,50 +28,50 @@ public:
   {
     if (bno055_driver_.getAcc() < 0)
     {
-      printf("Failed to get accelerometer data.\n");
+      ROS_ERROR("Failed to get accelerometer data.");
     }
-    else 
-    {
-      printf("ACC X: %f, ACC Y: %f, ACC Z: %f\n", bno055_driver_.data_.acc_x_, bno055_driver_.data_.acc_y_, bno055_driver_.data_.acc_z_);
-    }
-    
     if (bno055_driver_.getMag() < 0)
     {
-      printf("Failed to get magnometer data.\n");
+      ROS_ERROR("Failed to get magnometer data.");
     }
-    else 
-    {
-      printf("MAG X: %f, MAG Y: %f, MAG Z: %f\n", bno055_driver_.data_.mag_x_, bno055_driver_.data_.mag_y_, bno055_driver_.data_.mag_z_);
-    }
-    
     if (bno055_driver_.getGyr() < 0)
     {
-      printf("Failed to get gyroscope data.\n");
+      ROS_ERROR("Failed to get gyroscope data.");
     }
-    else 
-    {
-      printf("GYR X: %f, GYR Y: %f, GYR Z: %f\n", bno055_driver_.data_.gyr_x_, bno055_driver_.data_.gyr_y_, bno055_driver_.data_.gyr_z_);
-    }
-    
     if (bno055_driver_.getEul() < 0)
     {
-      printf("Failed to get euler angles data.\n");
+      ROS_ERROR("Failed to get euler angles data.");
     }
-    else 
-    {
-      printf("EUL HEADING: %f, EUL ROLL: %f, EUL PITCH: %f\n", bno055_driver_.data_.eul_heading_, bno055_driver_.data_.eul_roll_, bno055_driver_.data_.eul_pitch_);
-    }
-
     if (bno055_driver_.getQua() < 0)
     {
-      printf("Failed to get quaternions data.\n");
+      ROS_ERROR("Failed to get quaternions data.");
     }
-    else 
-    {
-      printf("QUA W: %f, QUA X: %f, QUA Y: %f, QUA Z: %f.\n", bno055_driver_.data_.qua_w_, bno055_driver_.data_.qua_x_, bno055_driver_.data_.qua_y_, bno055_driver_.data_.qua_z_);
-    }
+    
+    ros::Time time_stamp = ros::Time::now();
 
-    printf("---------------------------------------\n"); 
+    imu_msg_.header.stamp = time_stamp;
+    
+    imu_msg_.orientation.x = bno055_driver_.data_.qua_x_; 
+    imu_msg_.orientation.y = bno055_driver_.data_.qua_y_;
+    imu_msg_.orientation.z = bno055_driver_.data_.qua_z_;
+    imu_msg_.orientation.w = bno055_driver_.data_.qua_w_;
+
+    imu_msg_.angular_velocity.x = bno055_driver_.data_.gyr_x_;
+    imu_msg_.angular_velocity.y = bno055_driver_.data_.gyr_y_;
+    imu_msg_.angular_velocity.z = bno055_driver_.data_.gyr_z_;
+
+    imu_msg_.linear_acceleration.x = bno055_driver_.data_.acc_x_;
+    imu_msg_.linear_acceleration.y = bno055_driver_.data_.acc_y_;
+    imu_msg_.linear_acceleration.z = bno055_driver_.data_.acc_z_;
+    
+    mag_msg_.header.stamp = time_stamp;
+    
+    mag_msg_.magnetic_field.x = bno055_driver_.data_.mag_x_;
+    mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
+    mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;
+
+    imu_pub_.publish(imu_msg_);
+    mag_pub_.publish(mag_msg_);
   }
 
   ~Bno055Node()
