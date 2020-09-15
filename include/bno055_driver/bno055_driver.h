@@ -1,3 +1,10 @@
+/*
+  Author: Joey Yang
+  Email: joeyyang.ai@gmail.com
+  Description: 
+    Header file of the ROS-agnostic Linux hardware driver for the BNO055 sensor.
+*/
+
 #ifndef BNO055_DRIVER_H
 #define BNO055_DRIVER_H
 

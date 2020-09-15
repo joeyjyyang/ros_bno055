@@ -1,3 +1,10 @@
+/*
+  Author: Joey Yang
+  Email: joeyyang.ai@gmail.com
+  Description: 
+    Implementation file of the ROS-agnostic Linux hardware driver for the BNO055 sensor.
+*/
+
 #include "bno055_driver/bno055_driver.h"
 
 const char* I2C_BUS = "/dev/i2c-1";

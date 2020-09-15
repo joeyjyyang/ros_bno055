@@ -1,3 +1,11 @@
+/*
+  Author: Joey Yang
+  Email: joeyyang.ai@gmail.com
+  Description: 
+    ROS node that wraps around the ROS-agnostic Linux hardware driver for the BNO055 sensor,
+    which instantiates the driver object and publishes sensor data to ROS.
+*/
+
 #include "bno055_driver/bno055_driver.h"
 
 #include <ros/ros.h>
