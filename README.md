@@ -29,7 +29,13 @@ rospack profile
 ## Nodes
 - `bno055_node`
 
-## Parameters
+## Topics
+- `/bno055_node/imu`
+- `/bno055_node/magnetic_field`
+
+## Messages
+- `sensor_msgs/Imu`
+- `sensor_msgs/MagneticField`
 
 ## Usage
 ### Example
@@ -37,12 +43,14 @@ rospack profile
 roslaunch bno055_driver bno055_imu.launch
 ```
 
+## Notes
+### Raspberry Pi I2C Clock Stretching (Bug)
+Adafruit's BNO055 sensor utilizes I2C clock stretching to function correctly; however, there is an existing hardware bug within the Raspberry Pi (all versions and models) that prevents the hardware I2C from supporting the clock stretching functionality. As a result, there are 2 possible workarounds to choose from:
+1. Enabling and using the software I2C driver on the Raspberry Pi, as it does support I2C clock stretching: https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-software-i2c.md
+2. Slowing down the I2C clock on the Raspberry Pi by reducing the baudrate: https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/i2c-clock-stretching
+
 ## Contact
 - Author and Maintainer: Joey Yang
 - Email: joeyyang.ai@gmail.com
 - GitHub: https://github.com/joeyjyyang
 - LinkedIn: https://www.linkedin.com/in/joey-yang
-
-## To Do:
-- Add instructions on resolving I2C clock stretching issue for Raspberry Pi.
-- Complete README.
