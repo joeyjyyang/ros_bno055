@@ -79,6 +79,7 @@ enum RegisterMap
   GRV_DATA_Y_MSB = 0x31,
   GRV_DATA_Z_LSB = 0x32,
   GRV_DATA_Z_MSB = 0x33,
+  TEMP = 0x34;
   CALIB_STAT = 0x35,
   ST_RESULT = 0x36,
   INT_STA = 0x37,
@@ -187,6 +188,16 @@ struct LiaData {
   __s16 lia_z;
 };
 
+struct GrvData {
+  __s16 grv_x;
+  __s16 grv_y;
+  __s16 grv_z;
+};
+
+struct TempData {
+  __s8 temp;
+};
+
 class Bno055Driver
 {
 public:
@@ -200,7 +211,9 @@ public:
   int getGyr();
   int getEul();
   int getQua();
-  int getLia(); 
+  int getLia();
+  int getGrv();
+  int getTemp();
   ~Bno055Driver();
   /* Data structure to hold sensor data */
   struct Data_ {
@@ -223,6 +236,10 @@ public:
     double lia_x_;
     double lia_y_;
     double lia_z_;
+    double grv_x_;
+    double grv_y_;
+    double grv_z_;
+    double temp_;
   } data_;
 private:
   PowMode pow_mode_;
