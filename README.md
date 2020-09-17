@@ -10,7 +10,7 @@ The hardware driver for the sensor is ROS-agnostic, meaning it provides a clean 
 	- Ubuntu 16.04 (Xenial)
 	- ROS Kinetic
 ### Hardware
-- Adafruit's BNO055 Absolute Orientation Sensor: https://www.adafruit.com/product/2472
+- Adafruit's BNO055 Absolute Orientation Sensor
 
 ## Installation
 ### Install from Git Repository
@@ -25,6 +25,10 @@ catkin_make # catkin build bno055_driver (if using catkin_tools)
 source devel/setup.bash
 rospack profile
 ```
+
+## Setup
+### Calibration
+- BNO055 datasheet, including calibration instructions: https://cdn-shop.adafruit.com/datasheets/BST_BNO055_DS000_12.pdf
 
 ## Nodes
 - `bno055_node`
