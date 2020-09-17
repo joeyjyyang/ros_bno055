@@ -50,10 +50,10 @@ public:
     {
       ROS_ERROR("Failed to get gyroscope data.");
     }
-    if (bno055_driver_.getEul() < 0)
+    /*if (bno055_driver_.getEul() < 0)
     {
       ROS_ERROR("Failed to get euler angles data.");
-    }
+    }*/
     if (bno055_driver_.getQua() < 0)
     {
       ROS_ERROR("Failed to get quaternions data.");
@@ -62,7 +62,15 @@ public:
     {
       ROS_ERROR("Failed to get linear acceleration data.");
     }
-    
+    /*if (bno055_driver_.getGrv() < 0)
+    {
+      ROS_ERROR("Failed to get gravity vector data.");
+    }*/
+    if (bno055_driver_.getTemp() < 0)
+    {
+      ROS_ERROR("Failed to get temperature data.");
+    }
+   
     ros::Time time_stamp = ros::Time::now();
 
     imu_msg_.header.stamp = time_stamp;

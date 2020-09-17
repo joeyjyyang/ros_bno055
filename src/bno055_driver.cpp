@@ -211,6 +211,40 @@ int bno055::Bno055Driver::getLia()
   return 1;
 }
 
+int bno055::Bno055Driver::getGrv()
+{
+  bno055::GrvData grv_data;
+
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::GRV_DATA_X_LSB, 0x06, (__u8*)&grv_data) != 0x06) 
+  {
+    printf("ERROR: Could not read gravity vector data.");
+    perror("ERROR: ");
+    exit(-1);
+  }
+ 
+  bno055::Bno055Driver::data_.grv_x_ = (double)grv_data.grv_x / 100.0;
+  bno055::Bno055Driver::data_.grv_y_ = (double)grv_data.grv_y / 100.0;
+  bno055::Bno055Driver::data_.grv_z_ = (double)grv_data.grv_z / 100.0;
+
+  return 1;
+}
+
+int bno055::Bno055Driver::getTemp()
+{
+  bno055::TempData temp_data;
+
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::TEMP, 0x01, (__u8*)&temp_data) != 0x01) 
+  {
+    printf("ERROR: Could not read temperature data.");
+    perror("ERROR: ");
+    exit(-1);
+  }
+ 
+  bno055::Bno055Driver::data_.temp_ = (double)temp_data.temp;
+
+  return 1;
+}
+
 bno055::Bno055Driver::~Bno055Driver()
 {
   printf("BNO055 IMU driver destroyed.\n");  
