@@ -32,10 +32,12 @@ rospack profile
 ## Topics
 - `/bno055_node/imu`
 - `/bno055_node/magnetic_field`
+- `/bno055_node/temperature`
 
 ## Messages
 - `sensor_msgs/Imu`
 - `sensor_msgs/MagneticField`
+- `sensor_msgs/Temperature`
 
 ## Usage
 ### Example

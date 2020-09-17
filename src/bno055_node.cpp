@@ -11,6 +11,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/Temperature.h>
 
 namespace bno055
 {
@@ -34,6 +35,7 @@ public:
      
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
+    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
   }
   
   void publishData()
@@ -94,8 +96,13 @@ public:
     mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
     mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;
 
+    temp_msg_.header.stamp = time_stamp;
+
+    temp_msg_.temperature = bno055_driver_.data_.temp_;
+
     imu_pub_.publish(imu_msg_);
     mag_pub_.publish(mag_msg_);
+    temp_pub_.publish(temp_msg_);
   }
 
   ~Bno055Node()
@@ -105,8 +112,10 @@ private:
   ros::NodeHandle nh_;
   ros::Publisher imu_pub_;
   ros::Publisher mag_pub_;
+  ros::Publisher temp_pub_;
   sensor_msgs::Imu imu_msg_;
   sensor_msgs::MagneticField mag_msg_;
+  sensor_msgs::Temperature temp_msg_;
   /* BNO055 */
   bno055::Bno055Driver bno055_driver_;
 };
