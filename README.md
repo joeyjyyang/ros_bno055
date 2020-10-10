@@ -1,4 +1,4 @@
-# bno055_driver
+# ros_bno055
 **A ROS package containing a Linux hardware driver for Adafruit's BNO055 9-DoF Orientation Sensor Breakout and a ROS node wrapper that exposes the sensor driver to the ROS ecosystem.**
 
 ## Overview
@@ -17,11 +17,11 @@ The hardware driver for the sensor is ROS-agnostic, meaning it provides a clean 
 ```
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone --single-branch --branch kinetic-devel https://github.com/joeyjyyang/bno055_driver.git
+git clone --single-branch --branch kinetic-devel https://github.com/joeyjyyang/ros_bno055.git
 cd .. 
 sudo apt-get install -y
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
-catkin_make # catkin build bno055_driver (if using catkin_tools)
+catkin_make # catkin build ros_bno055 (if using catkin_tools)
 source devel/setup.bash
 rospack profile
 ```
@@ -46,7 +46,7 @@ rospack profile
 ## Usage
 ### Example
 ```
-roslaunch bno055_driver bno055_imu.launch
+roslaunch ros_bno055 bno055_imu.launch
 ```
 
 ## Notes

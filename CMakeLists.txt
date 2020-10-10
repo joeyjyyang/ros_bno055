@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(bno055_driver)
+project(ros_bno055)
 
 add_compile_options(-std=c++11)
 
