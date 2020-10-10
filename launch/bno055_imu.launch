@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="bno055_node" pkg="bno055_driver" type="bno055_node" respawn="false" output="screen"/>
+  <node name="bno055_node" pkg="ros_bno055" type="bno055_node" respawn="false" output="screen"/>
 </launch>

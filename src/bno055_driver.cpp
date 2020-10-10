@@ -5,7 +5,7 @@
     Implementation file of the ROS-agnostic Linux hardware driver for the BNO055 sensor.
 */
 
-#include "bno055_driver/bno055_driver.h"
+#include "ros_bno055/bno055_driver.h"
 
 const char* I2C_BUS = "/dev/i2c-1";
 const __u8 I2C_ADDRESS = 0x28;

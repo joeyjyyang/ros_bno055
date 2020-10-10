@@ -6,7 +6,7 @@
     which instantiates the driver object and publishes sensor data to ROS.
 */
 
-#include "bno055_driver/bno055_driver.h"
+#include "ros_bno055/bno055_driver.h"
 
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
