@@ -79,7 +79,7 @@ enum RegisterMap
   GRV_DATA_Y_MSB = 0x31,
   GRV_DATA_Z_LSB = 0x32,
   GRV_DATA_Z_MSB = 0x33,
-  TEMP = 0x34;
+  TEMP = 0x34,
   CALIB_STAT = 0x35,
   ST_RESULT = 0x36,
   INT_STA = 0x37,
