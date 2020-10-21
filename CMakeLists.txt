@@ -34,6 +34,12 @@ target_link_libraries(bno055_node
   ${catkin_LIBRARIES}
 )
 
+add_executable(position_estimation_node src/position_estimation_node.cpp)
+
+target_link_libraries(position_estimation_node 
+    ${catkin_LIBRARIES}
+)
+
 install(DIRECTORY include/${PROJECT_NAME}/
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
    FILES_MATCHING PATTERN "*.h"
