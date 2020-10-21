@@ -39,3 +39,11 @@ install(DIRECTORY include/${PROJECT_NAME}/
    FILES_MATCHING PATTERN "*.h"
    PATTERN ".svn" EXCLUDE
 )
+
+############## TEST ###############
+
+add_executable(position_estimation_node test/position_estimation_node.cpp)
+
+target_link_libraries(position_estimation_node
+  ${catkin_LIBRARIES}
+)
