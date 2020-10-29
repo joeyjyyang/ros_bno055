@@ -124,7 +124,7 @@ private:
 int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "bno055_node");
-  ros::NodeHandle nh("~");
+  ros::NodeHandle nh;
   bno055::Bno055Node bno055_node(nh);
 
   ros::Rate loop_rate(10);

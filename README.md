@@ -33,9 +33,9 @@ rospack profile
 - `bno055_node`
 
 ## Topics
-- `/bno055_node/imu`
-- `/bno055_node/magnetic_field`
-- `/bno055_node/temperature`
+- `/imu`
+- `/magnetic_field`
+- `/temperature`
 
 ## Messages
 - `sensor_msgs/Imu`
