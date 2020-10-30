@@ -38,7 +38,7 @@ public:
     temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
   }
   
-  void publishData()
+  void publishImu()
   {
     /*if (bno055_driver_.getAcc() < 0)
     {
@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 
   while (ros::ok())
   {
-    bno055_node.publishData();
+    bno055_node.publishImu();
     ros::spinOnce();
     loop_rate.sleep();
   }
