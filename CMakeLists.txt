@@ -9,6 +9,11 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
 )
 
+add_message_files(
+  FILES
+  OrientationEuler.msg
+)
+
 generate_messages(
   DEPENDENCIES
   sensor_msgs
@@ -33,6 +38,8 @@ add_executable(bno055_node src/bno055_node.cpp src/bno055_driver.cpp)
 target_link_libraries(bno055_node
   ${catkin_LIBRARIES}
 )
+
+add_dependencies(bno055_node ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 install(DIRECTORY include/${PROJECT_NAME}/
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}

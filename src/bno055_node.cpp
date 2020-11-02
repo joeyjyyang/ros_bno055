@@ -12,6 +12,7 @@
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/Temperature.h>
+#include <ros_bno055/OrientationEuler.h>
 
 namespace bno055
 {
@@ -34,11 +35,12 @@ public:
     }
      
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
+    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
     temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
   }
   
-  void publishImu()
+  void publishData()
   {
     /*if (bno055_driver_.getAcc() < 0)
     {
@@ -52,10 +54,10 @@ public:
     {
       ROS_ERROR("Failed to get gyroscope data.");
     }
-    /*if (bno055_driver_.getEul() < 0)
+    if (bno055_driver_.getEul() < 0)
     {
       ROS_ERROR("Failed to get euler angles data.");
-    }*/
+    }
     if (bno055_driver_.getQua() < 0)
     {
       ROS_ERROR("Failed to get quaternions data.");
@@ -100,9 +102,16 @@ public:
 
     temp_msg_.temperature = bno055_driver_.data_.temp_;
 
+    euler_msg_.header.stamp = time_stamp;
+    
+    euler_msg_.heading = bno055_driver_.data_.eul_heading_;
+    euler_msg_.roll = bno055_driver_.data_.eul_roll_;
+    euler_msg_.pitch = bno055_driver_.data_.eul_pitch_;
+    
     imu_pub_.publish(imu_msg_);
     mag_pub_.publish(mag_msg_);
     temp_pub_.publish(temp_msg_);
+    euler_pub_.publish(euler_msg_);
   }
 
   ~Bno055Node()
@@ -113,9 +122,11 @@ private:
   ros::Publisher imu_pub_;
   ros::Publisher mag_pub_;
   ros::Publisher temp_pub_;
+  ros::Publisher euler_pub_;
   sensor_msgs::Imu imu_msg_;
   sensor_msgs::MagneticField mag_msg_;
   sensor_msgs::Temperature temp_msg_;
+  ros_bno055::OrientationEuler euler_msg_;
   /* BNO055 */
   bno055::Bno055Driver bno055_driver_;
 };
@@ -131,7 +142,7 @@ int main(int argc, char* argv[])
 
   while (ros::ok())
   {
-    bno055_node.publishImu();
+    bno055_node.publishData();
     ros::spinOnce();
     loop_rate.sleep();
   }
