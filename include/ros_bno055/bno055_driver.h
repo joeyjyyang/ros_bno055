@@ -211,6 +211,25 @@ struct CalibStatData
   __s8 calib_stat;
 };
 
+struct CalibOffsetData 
+{
+  __s16 acc_offset_x;
+  __s16 acc_offset_y;
+  __s16 acc_offset_z;
+  __s16 mag_offset_x;
+  __s16 mag_offset_y;
+  __s16 mag_offset_z;
+  __s16 gyr_offset_x;
+  __s16 gyr_offset_y;
+  __s16 gyr_offset_z;
+};
+
+struct CalibRadius
+{
+  __s16 acc_radius;
+  __s16 mag_radius;
+};
+
 class Bno055Driver
 {
 public:
@@ -228,6 +247,8 @@ public:
   int getGrv();
   int getTemp();
   int getCalibStat();
+  int getCalibOffset();
+  int getCalibRadius();
   ~Bno055Driver();
   /* Data structure to hold sensor data */
   struct Data_ {
@@ -257,7 +278,18 @@ public:
     int calib_stat_sys_;
     int calib_stat_acc_;
     int calib_stat_gyr_;
-    int calib_stat_mag_; 
+    int calib_stat_mag_;
+    double acc_offset_x_;
+    double acc_offset_y_;
+    double acc_offset_z_;
+    double mag_offset_x_;
+    double mag_offset_y_;
+    double mag_offset_z_;
+    double gyr_offset_x_;
+    double gyr_offset_y_;
+    double gyr_offset_z_;
+    double acc_radius_;
+    double mag_radius_; 
   } data_;
 private:
   PowMode pow_mode_;
