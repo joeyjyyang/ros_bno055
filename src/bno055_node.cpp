@@ -33,7 +33,11 @@ public:
     {
       ROS_ERROR("Failed to set operation mode to NDOF.");
     }
-     
+    if (bno055_driver_.getCalibStat() < 0)
+    {
+      ROS_ERROR("Failed to get calibration status data.");
+    }
+    
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
     euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
@@ -142,7 +146,7 @@ int main(int argc, char* argv[])
 
   while (ros::ok())
   {
-    bno055_node.publishData();
+    //bno055_node.publishData();
     ros::spinOnce();
     loop_rate.sleep();
   }

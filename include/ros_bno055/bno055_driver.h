@@ -151,51 +151,64 @@ enum OprMode
 };
 
 /* Data structures to hold sensor data */
-struct AccData {
+struct AccData 
+{
   __s16 acc_x;
   __s16 acc_y;
   __s16 acc_z;
 };
 
-struct MagData {
+struct MagData 
+{
   __s16 mag_x;
   __s16 mag_y;
   __s16 mag_z;
 };
 
-struct GyrData {
+struct GyrData 
+{
   __s16 gyr_x;
   __s16 gyr_y;
   __s16 gyr_z;
 };
 
-struct EulData {
+struct EulData 
+{
   __s16 eul_heading;
   __s16 eul_roll;
   __s16 eul_pitch;
 };
 
-struct QuaData {
+struct QuaData 
+{
   __s16 qua_w;
   __s16 qua_x;
   __s16 qua_y;
   __s16 qua_z;
 };
 
-struct LiaData {
+struct LiaData 
+{
   __s16 lia_x;
   __s16 lia_y;
   __s16 lia_z;
 };
 
-struct GrvData {
+struct GrvData 
+{
   __s16 grv_x;
   __s16 grv_y;
   __s16 grv_z;
 };
 
-struct TempData {
+struct TempData 
+{
   __s8 temp;
+};
+
+struct CalibStatData 
+{
+  __s8 calib_stat;
 };
 
 class Bno055Driver
@@ -214,6 +227,7 @@ public:
   int getLia();
   int getGrv();
   int getTemp();
+  int getCalibStat();
   ~Bno055Driver();
   /* Data structure to hold sensor data */
   struct Data_ {
@@ -240,6 +254,10 @@ public:
     double grv_y_;
     double grv_z_;
     double temp_;
+    int calib_stat_sys_;
+    int calib_stat_acc_;
+    int calib_stat_gyr_;
+    int calib_stat_mag_; 
   } data_;
 private:
   PowMode pow_mode_;

@@ -20,7 +20,7 @@ int bno055::Bno055Driver::initI2c()
   if ((file_desc_ = open(I2C_BUS, O_RDWR)) < 0)
   {
     printf("ERROR: Could not open I2C bus: %s.\n", I2C_BUS); 
-    perror("ERROR: ");
+    perror("ERROR: \n");
     exit(-1);
   }
   else 
@@ -31,7 +31,7 @@ int bno055::Bno055Driver::initI2c()
   if (ioctl(file_desc_, I2C_SLAVE, I2C_ADDRESS) < 0)
   {
     printf("ERROR: Could not locate BNO055 sensor at address: 0x%02X.\n", I2C_ADDRESS);
-    perror("ERROR: ");
+    perror("ERROR: \n");
     exit(-1);
   }
   else 
@@ -46,8 +46,8 @@ int bno055::Bno055Driver::setConfigMode()
 {
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::CONFIG_MODE) < 0)
   {
-    printf("ERROR: Could not set operation mode to CONFIG");
-    perror("ERROR: ");
+    printf("ERROR: Could not set operation mode to CONFIG.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
   else 
@@ -67,8 +67,8 @@ int bno055::Bno055Driver::setImuMode()
 
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::IMU) < 0)
   {
-    printf("ERROR: Could not set operation mode to IMU");
-    perror("ERROR: ");
+    printf("ERROR: Could not set operation mode to IMU.\n");
+    perror("ERROR: \n");
     exit(-1);
   } 
   else 
@@ -88,8 +88,8 @@ int bno055::Bno055Driver::setNdofMode()
 
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::NDOF) < 0)
   {
-    printf("ERROR: Could not set operation mode to NDOF");
-    perror("ERROR: ");
+    printf("ERROR: Could not set operation mode to NDOF.\n");
+    perror("ERROR: \n");
     exit(-1);
   } 
   else 
@@ -108,8 +108,8 @@ int bno055::Bno055Driver::getAcc()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::ACC_DATA_X_LSB, 0x06, (__u8*)&acc_data) != 0x06) 
   {
-    printf("ERROR: Could not read accelerometer data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read accelerometer data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
  
@@ -126,8 +126,8 @@ int bno055::Bno055Driver::getMag()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::MAG_DATA_X_LSB, 0x06, (__u8*)&mag_data) != 0x06) 
   {
-    printf("ERROR: Could not read magnetometer data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read magnetometer data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
   
@@ -144,8 +144,8 @@ int bno055::Bno055Driver::getGyr()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::GYR_DATA_X_LSB, 0x06, (__u8*)&gyr_data) != 0x06) 
   {
-    printf("ERROR: Could not read gyroscope data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read gyroscope data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
   
@@ -162,8 +162,8 @@ int bno055::Bno055Driver::getEul()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::EUL_HEADING_LSB, 0x06, (__u8*)&eul_data) != 0x06)
   {
-    printf("ERROR: Could not read euler angles data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read euler angles data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
   
@@ -180,8 +180,8 @@ int bno055::Bno055Driver::getQua()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::QUA_DATA_W_LSB, 0x08, (__u8*)&qua_data) != 0x08)
   {
-    printf("ERROR: Could not read quaternions data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read quaternions data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
   
@@ -199,8 +199,8 @@ int bno055::Bno055Driver::getLia()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::LIA_DATA_X_LSB, 0x06, (__u8*)&lia_data) != 0x06) 
   {
-    printf("ERROR: Could not read linear acceleration data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read linear acceleration data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
  
@@ -217,8 +217,8 @@ int bno055::Bno055Driver::getGrv()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::GRV_DATA_X_LSB, 0x06, (__u8*)&grv_data) != 0x06) 
   {
-    printf("ERROR: Could not read gravity vector data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read gravity vector data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
  
@@ -235,13 +235,34 @@ int bno055::Bno055Driver::getTemp()
 
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::TEMP, 0x01, (__u8*)&temp_data) != 0x01) 
   {
-    printf("ERROR: Could not read temperature data.");
-    perror("ERROR: ");
+    printf("ERROR: Could not read temperature data.\n");
+    perror("ERROR: \n");
     exit(-1);
   }
  
   bno055::Bno055Driver::data_.temp_ = (double)temp_data.temp;
 
+  return 1;
+}
+
+int bno055::Bno055Driver::getCalibStat()
+{
+  bno055::CalibStatData calib_stat_data;
+
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::CALIB_STAT, 0x01, (__u8*)&calib_stat_data) != 0x01) 
+  {
+    printf("ERROR: Could not read calibration status data.\n");
+    perror("ERROR: \n");
+    exit(-1);
+  }
+ 
+  // Bitwise AND to clear (reset to 0) irrelevant bits.
+  bno055::Bno055Driver::data_.calib_stat_sys_ = (calib_stat_data.calib_stat & 0b11000000) >> 6;
+  bno055::Bno055Driver::data_.calib_stat_gyr_ = (calib_stat_data.calib_stat & 0b00110000) >> 4;
+  bno055::Bno055Driver::data_.calib_stat_acc_ = (calib_stat_data.calib_stat & 0b00001100) >> 2;
+  bno055::Bno055Driver::data_.calib_stat_mag_ = (calib_stat_data.calib_stat & 0b00000011);
+
+  printf("Calibration Status: System: %d, Accelerometer: %d, Gyroscope: %d, Magnetometer: %d.\n", bno055::Bno055Driver::data_.calib_stat_sys_, bno055::Bno055Driver::data_.calib_stat_acc_, bno055::Bno055Driver::data_.calib_stat_gyr_, bno055::Bno055Driver::data_.calib_stat_mag_);  
   return 1;
 }
 
