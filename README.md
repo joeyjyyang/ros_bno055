@@ -52,6 +52,8 @@ roslaunch ros_bno055 bno055_imu.launch
 ### Raspberry Pi I2C Clock Stretching (Bug)
 Adafruit's BNO055 sensor utilizes I2C clock stretching to function correctly; however, there is an existing hardware bug within the Raspberry Pi (all versions and models) that prevents the hardware I2C from supporting the clock stretching functionality. As a result, there are 2 possible workarounds to choose from:
 1. Enabling and using the software I2C driver on the Raspberry Pi, as it does support I2C clock stretching: https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-software-i2c.md
+- Note: if using method 1. above (enabling and using the software I2C driver on the Raspberry Pi), ensure that the `I2C_BUS` constant in `src/bno_driver.cpp` is set to `/dev/i2c-3`, instead of the default `/dev/i2c-1`.
+
 2. Slowing down the I2C clock on the Raspberry Pi by reducing the baudrate: https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/i2c-clock-stretching
 
 ## Contact
