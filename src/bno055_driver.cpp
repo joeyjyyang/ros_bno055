@@ -7,7 +7,12 @@
 
 #include "ros_bno055/bno055_driver.h"
 
-const char* I2C_BUS = "/dev/i2c-1";
+// Set to I2C Bus 3 for software I2C driver on Raspberry Pi.
+const char* I2C_BUS = "/dev/i2c-3";
+
+// Set to I2C Bus 1 for default.
+//const char* I2C_BUS = "/dev/i2c-1";
+
 const __u8 I2C_ADDRESS = 0x28;
 
 bno055::Bno055Driver::Bno055Driver() : pow_mode_(bno055::PowMode::NORMAL_MODE), opr_mode_(bno055::OprMode::CONFIG_MODE)
@@ -262,7 +267,57 @@ int bno055::Bno055Driver::getCalibStat()
   bno055::Bno055Driver::data_.calib_stat_acc_ = (calib_stat_data.calib_stat & 0b00001100) >> 2;
   bno055::Bno055Driver::data_.calib_stat_mag_ = (calib_stat_data.calib_stat & 0b00000011);
 
-  printf("Calibration Status: System: %d, Accelerometer: %d, Gyroscope: %d, Magnetometer: %d.\n", bno055::Bno055Driver::data_.calib_stat_sys_, bno055::Bno055Driver::data_.calib_stat_acc_, bno055::Bno055Driver::data_.calib_stat_gyr_, bno055::Bno055Driver::data_.calib_stat_mag_);  
+  printf("System Calibration Status: %d.\n", bno055::Bno055Driver::data_.calib_stat_sys_);
+  printf("Accelerometer Calibration Status: %d.\n", bno055::Bno055Driver::data_.calib_stat_acc_);
+  printf("Magnetometer Calibration Status: %d.\n", bno055::Bno055Driver::data_.calib_stat_mag_);
+  printf("Gyroscope Calibration Status: %d.\n", bno055::Bno055Driver::data_.calib_stat_gyr_);
+
+  return 1;
+}
+
+int bno055::Bno055Driver::getCalibOffset()
+{
+ // Reset to config mode first.
+  setConfigMode();
+
+  bno055::CalibOffsetData calib_offset_data;
+
+  // Read 18 bytes into offset data structure (6 bytes for acc, 6 bytes for mag, 6 bytes for gyr).
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::ACC_OFFSET_X_LSB, 0x12, (__u8*)&calib_offset_data) != 0x12) 
+  {
+    printf("ERROR: Could not read calibration offset data.\n");
+    perror("ERROR: \n");
+    exit(-1);
+  }
+ 
+  bno055::Bno055Driver::data_.acc_offset_x_ = calib_offset_data.acc_offset_x;
+  bno055::Bno055Driver::data_.acc_offset_y_ = calib_offset_data.acc_offset_y;
+  bno055::Bno055Driver::data_.acc_offset_z_ = calib_offset_data.acc_offset_z;
+  bno055::Bno055Driver::data_.mag_offset_x_ = calib_offset_data.mag_offset_x;
+  bno055::Bno055Driver::data_.mag_offset_y_ = calib_offset_data.mag_offset_y;
+  bno055::Bno055Driver::data_.mag_offset_z_ = calib_offset_data.mag_offset_z;
+  bno055::Bno055Driver::data_.gyr_offset_x_ = calib_offset_data.gyr_offset_x;
+  bno055::Bno055Driver::data_.gyr_offset_y_ = calib_offset_data.gyr_offset_y;
+  bno055::Bno055Driver::data_.gyr_offset_z_ = calib_offset_data.gyr_offset_z;
+
+  printf("Accelerometer Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.acc_offset_x_, bno055::Bno055Driver::data_.acc_offset_y_, bno055::Bno055Driver::data_.acc_offset_z_);  
+  printf("Magnetometer Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.mag_offset_x_, bno055::Bno055Driver::data_.mag_offset_y_, bno055::Bno055Driver::data_.mag_offset_z_);  
+  printf("Gyroscope Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.gyr_offset_x_, bno055::Bno055Driver::data_.gyr_offset_y_, bno055::Bno055Driver::data_.gyr_offset_z_);  
+
+  // Reset to original mode.
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::NDOF) < 0)
+  {
+    printf("ERROR: Could not set operation mode to NDOF.\n");
+    perror("ERROR: \n");
+    exit(-1);
+  } 
+  else 
+  {
+    printf("Set operation mode to NDOF: 0x%02X.\n", bno055::OprMode::NDOF);
+  } 
+  opr_mode_ = bno055::OprMode::NDOF;
+  usleep(500000);
+
   return 1;
 }
 

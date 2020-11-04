@@ -213,21 +213,21 @@ struct CalibStatData
 
 struct CalibOffsetData 
 {
-  __s16 acc_offset_x;
-  __s16 acc_offset_y;
-  __s16 acc_offset_z;
-  __s16 mag_offset_x;
-  __s16 mag_offset_y;
-  __s16 mag_offset_z;
-  __s16 gyr_offset_x;
-  __s16 gyr_offset_y;
-  __s16 gyr_offset_z;
+  __u16 acc_offset_x;
+  __u16 acc_offset_y;
+  __u16 acc_offset_z;
+  __u16 mag_offset_x;
+  __u16 mag_offset_y;
+  __u16 mag_offset_z;
+  __u16 gyr_offset_x;
+  __u16 gyr_offset_y;
+  __u16 gyr_offset_z;
 };
 
 struct CalibRadius
 {
-  __s16 acc_radius;
-  __s16 mag_radius;
+  __u16 acc_radius;
+  __u16 mag_radius;
 };
 
 class Bno055Driver
@@ -279,17 +279,17 @@ public:
     int calib_stat_acc_;
     int calib_stat_gyr_;
     int calib_stat_mag_;
-    double acc_offset_x_;
-    double acc_offset_y_;
-    double acc_offset_z_;
-    double mag_offset_x_;
-    double mag_offset_y_;
-    double mag_offset_z_;
-    double gyr_offset_x_;
-    double gyr_offset_y_;
-    double gyr_offset_z_;
-    double acc_radius_;
-    double mag_radius_; 
+    int acc_offset_x_;
+    int acc_offset_y_;
+    int acc_offset_z_;
+    int mag_offset_x_;
+    int mag_offset_y_;
+    int mag_offset_z_;
+    int gyr_offset_x_;
+    int gyr_offset_y_;
+    int gyr_offset_z_;
+    int acc_radius_;
+    int mag_radius_; 
   } data_;
 private:
   PowMode pow_mode_;
