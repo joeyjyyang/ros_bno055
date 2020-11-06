@@ -41,6 +41,10 @@ public:
     {
       ROS_ERROR("Failed to get calibration offset data.");
     }
+    if (bno055_driver_.getCalibRadius() < 0)
+    {
+      ROS_ERROR("Failed to get calibration radius data.");
+    }
     
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
     euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
