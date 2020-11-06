@@ -321,6 +321,44 @@ int bno055::Bno055Driver::getCalibOffset()
   return 1;
 }
 
+int bno055::Bno055Driver::getCalibRadius()
+{
+ // Reset to config mode first.
+  setConfigMode();
+
+  bno055::CalibRadiusData calib_radius_data;
+
+  // Read 4 bytes into offset data structure (2 bytes for acc, 2 bytes for mag).
+  if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::ACC_RADIUS_LSB, 0x04, (__u8*)&calib_radius_data) != 0x04) 
+  {
+    printf("ERROR: Could not read calibration radius data.\n");
+    perror("ERROR: \n");
+    exit(-1);
+  }
+ 
+  bno055::Bno055Driver::data_.acc_radius_ = calib_radius_data.acc_radius;
+  bno055::Bno055Driver::data_.mag_radius_ = calib_radius_data.mag_radius;
+
+  printf("Accelerometer Radius: %d.\n", bno055::Bno055Driver::data_.acc_radius_;  
+  printf("Magnetometer Radius: %d.\n", bno055::Bno055Driver::data_.mag_radius_);  
+
+  // Reset to original mode.
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::NDOF) < 0)
+  {
+    printf("ERROR: Could not set operation mode to NDOF.\n");
+    perror("ERROR: \n");
+    exit(-1);
+  } 
+  else 
+  {
+    printf("Set operation mode to NDOF: 0x%02X.\n", bno055::OprMode::NDOF);
+  } 
+  opr_mode_ = bno055::OprMode::NDOF;
+  usleep(500000);
+
+  return 1;
+}
+
 bno055::Bno055Driver::~Bno055Driver()
 {
   printf("BNO055 IMU driver destroyed.\n");  

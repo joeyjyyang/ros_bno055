@@ -224,7 +224,7 @@ struct CalibOffsetData
   __u16 gyr_offset_z;
 };
 
-struct CalibRadius
+struct CalibRadiusData
 {
   __u16 acc_radius;
   __u16 mag_radius;
