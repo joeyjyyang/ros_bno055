@@ -277,7 +277,10 @@ int bno055::Bno055Driver::getCalibStat()
 
 int bno055::Bno055Driver::getCalibOffset()
 {
- // Reset to config mode first.
+  // Save previous operation mode.
+  OprMode prev_opr_mode = opr_mode_;
+
+  // Reset to config mode first.
   setConfigMode();
 
   bno055::CalibOffsetData calib_offset_data;
@@ -304,18 +307,18 @@ int bno055::Bno055Driver::getCalibOffset()
   printf("Magnetometer Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.mag_offset_x_, bno055::Bno055Driver::data_.mag_offset_y_, bno055::Bno055Driver::data_.mag_offset_z_);  
   printf("Gyroscope Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.gyr_offset_x_, bno055::Bno055Driver::data_.gyr_offset_y_, bno055::Bno055Driver::data_.gyr_offset_z_);  
 
-  // Reset to original mode.
-  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::NDOF) < 0)
+  // Reset to previous mode.
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, prev_opr_mode) < 0)
   {
-    printf("ERROR: Could not set operation mode to NDOF.\n");
+    printf("ERROR: Could not set operation mode to previous mode.\n");
     perror("ERROR: \n");
     exit(-1);
   } 
   else 
   {
-    printf("Set operation mode to NDOF: 0x%02X.\n", bno055::OprMode::NDOF);
+    printf("Set operation mode to previous mode: 0x%02X.\n", prev_opr_mode);
   } 
-  opr_mode_ = bno055::OprMode::NDOF;
+  opr_mode_ = prev_opr_mode;
   usleep(500000);
 
   return 1;
@@ -323,7 +326,10 @@ int bno055::Bno055Driver::getCalibOffset()
 
 int bno055::Bno055Driver::getCalibRadius()
 {
- // Reset to config mode first.
+  // Save previous operation mode.
+  OprMode prev_opr_mode = opr_mode_;
+
+  // Reset to config mode first.
   setConfigMode();
 
   bno055::CalibRadiusData calib_radius_data;
@@ -342,18 +348,18 @@ int bno055::Bno055Driver::getCalibRadius()
   printf("Accelerometer Radius: %d.\n", bno055::Bno055Driver::data_.acc_radius_;  
   printf("Magnetometer Radius: %d.\n", bno055::Bno055Driver::data_.mag_radius_);  
 
-  // Reset to original mode.
-  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::NDOF) < 0)
+  // Reset to previous mode.
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, prev_opr_mode) < 0)
   {
-    printf("ERROR: Could not set operation mode to NDOF.\n");
+    printf("ERROR: Could not set operation mode to previous mode.\n");
     perror("ERROR: \n");
     exit(-1);
   } 
   else 
   {
-    printf("Set operation mode to NDOF: 0x%02X.\n", bno055::OprMode::NDOF);
+    printf("Set operation mode to previous mode: 0x%02X.\n", prev_opr_mode);
   } 
-  opr_mode_ = bno055::OprMode::NDOF;
+  opr_mode_ = prev_opr_mode;
   usleep(500000);
 
   return 1;
