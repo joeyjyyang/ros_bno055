@@ -345,7 +345,7 @@ int bno055::Bno055Driver::getCalibRadius()
   bno055::Bno055Driver::data_.acc_radius_ = calib_radius_data.acc_radius;
   bno055::Bno055Driver::data_.mag_radius_ = calib_radius_data.mag_radius;
 
-  printf("Accelerometer Radius: %d.\n", bno055::Bno055Driver::data_.acc_radius_;  
+  printf("Accelerometer Radius: %d.\n", bno055::Bno055Driver::data_.acc_radius_);  
   printf("Magnetometer Radius: %d.\n", bno055::Bno055Driver::data_.mag_radius_);  
 
   // Reset to previous mode.
