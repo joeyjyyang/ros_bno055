@@ -249,6 +249,7 @@ public:
   int getCalibStat();
   int getCalibOffset();
   int getCalibRadius();
+  int loadCalib();
   ~Bno055Driver();
   /* Data structure to hold sensor data */
   struct Data_ {

@@ -303,9 +303,9 @@ int bno055::Bno055Driver::getCalibOffset()
   bno055::Bno055Driver::data_.gyr_offset_y_ = calib_offset_data.gyr_offset_y;
   bno055::Bno055Driver::data_.gyr_offset_z_ = calib_offset_data.gyr_offset_z;
 
-  printf("Accelerometer Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.acc_offset_x_, bno055::Bno055Driver::data_.acc_offset_y_, bno055::Bno055Driver::data_.acc_offset_z_);  
-  printf("Magnetometer Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.mag_offset_x_, bno055::Bno055Driver::data_.mag_offset_y_, bno055::Bno055Driver::data_.mag_offset_z_);  
-  printf("Gyroscope Offsets: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.gyr_offset_x_, bno055::Bno055Driver::data_.gyr_offset_y_, bno055::Bno055Driver::data_.gyr_offset_z_);  
+  printf("Accelerometer Offset: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.acc_offset_x_, bno055::Bno055Driver::data_.acc_offset_y_, bno055::Bno055Driver::data_.acc_offset_z_);  
+  printf("Magnetometer Offset: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.mag_offset_x_, bno055::Bno055Driver::data_.mag_offset_y_, bno055::Bno055Driver::data_.mag_offset_z_);  
+  printf("Gyroscope Offset: X: %d, Y: %d, Z: %d.\n", bno055::Bno055Driver::data_.gyr_offset_x_, bno055::Bno055Driver::data_.gyr_offset_y_, bno055::Bno055Driver::data_.gyr_offset_z_);  
 
   // Reset to previous mode.
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, prev_opr_mode) < 0)
@@ -348,6 +348,49 @@ int bno055::Bno055Driver::getCalibRadius()
   printf("Accelerometer Radius: %d.\n", bno055::Bno055Driver::data_.acc_radius_);  
   printf("Magnetometer Radius: %d.\n", bno055::Bno055Driver::data_.mag_radius_);  
 
+  // Reset to previous mode.
+  if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, prev_opr_mode) < 0)
+  {
+    printf("ERROR: Could not set operation mode to previous mode.\n");
+    perror("ERROR: \n");
+    exit(-1);
+  } 
+  else 
+  {
+    printf("Set operation mode to previous mode: 0x%02X.\n", prev_opr_mode);
+  } 
+  opr_mode_ = prev_opr_mode;
+  usleep(500000);
+
+  return 1;
+}
+
+int bno055::Bno055Driver::loadCalib()
+{
+  // Save previous operation mode.
+  OprMode prev_opr_mode = opr_mode_;
+
+  // Reset to config mode first.
+  setConfigMode();
+
+  __u16 acc_offset[3] = {65519, 65530, 65532};
+  __u16 mag_offset[3] = {196, 65521, 64968};
+  __u16 gyr_offset[3] = {65534, 65534, 1};
+  __u16 acc_radius[1] = {1000};
+  __u16 mag_radius[1] = {805};
+  
+  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::ACC_OFFSET_X_LSB, 0x06, (__u8*)&acc_offset[0]);
+  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_OFFSET_X_LSB, 0x06, (__u8*)&mag_offset[0]);
+  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::GYR_OFFSET_X_LSB, 0x06, (__u8*)&gyr_offset[0]);
+  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::ACC_RADIUS_LSB, 0x02, (__u8*)&acc_radius[0]);
+  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_RADIUS_LSB, 0x02, (__u8*)&mag_radius[0]);
+  
+  printf("Setting Accelerometer Offset: X: %d, Y: %d, Z: %d.\n", acc_offset[0], acc_offset[1], acc_offset[2]);  
+  printf("Setting Magnetometer Offset: X: %d, Y: %d, Z: %d.\n", mag_offset[0], mag_offset[1], mag_offset[2]);  
+  printf("Setting Gyroscope Offset: X: %d, Y: %d, Z: %d.\n", gyr_offset[0], gyr_offset[1], gyr_offset[2]);  
+  printf("Setting Accelerometer Radius: %d.\n", acc_radius[0]);  
+  printf("Setting Magnetometer Radius: %d.\n", mag_radius[0]);  
+ 
   // Reset to previous mode.
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, prev_opr_mode) < 0)
   {
