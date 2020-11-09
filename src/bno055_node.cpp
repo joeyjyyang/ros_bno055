@@ -25,7 +25,8 @@ public:
     {
       ROS_ERROR("Failed to initialize BNO055 Driver.");
     }
-    /*if (bno055_driver_.setImuMode() < 0)
+ 
+   /*if (bno055_driver_.setImuMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to IMU.");
     }*/
@@ -33,6 +34,26 @@ public:
     {
       ROS_ERROR("Failed to set operation mode to NDOF.");
     }
+    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
+    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
+    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
+    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
+  }
+
+  bool isCalibrated()
+  {
+    if (bno_driver_.data_.calib_stat_sys_ == 3)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    } 
+  }
+  
+  void selfCalibrate()
+  {
     if (bno055_driver_.loadCalib() < 0)
     {
       ROS_ERROR("Failed to load calibration offset and radius data.");
@@ -49,13 +70,8 @@ public:
     {
       ROS_ERROR("Failed to get calibration radius data.");
     }
-    
-    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
-    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
-    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
-    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
   }
-  
+
   void publishData()
   {
     /*if (bno055_driver_.getAcc() < 0)
@@ -155,10 +171,22 @@ int main(int argc, char* argv[])
   bno055::Bno055Node bno055_node(nh);
 
   ros::Rate loop_rate(10);
+  ros::Rate calibration_rate(1);
+   
 
   while (ros::ok())
   {
-    //bno055_node.publishData();
+    if (bno055_node.isCalibrated())
+    {
+      bno055_node.publishData();
+    }
+    else
+    {
+      ROS_ERROR("Sensor not calibrated. Self-calibration. Please wait...");
+      bno055_node.selfCalibrate();
+      calibrate_rate.sleep();
+    }
+      
     ros::spinOnce();
     loop_rate.sleep();
   }
