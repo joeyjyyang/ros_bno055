@@ -373,7 +373,7 @@ int bno055::Bno055Driver::loadCalib()
   // Reset to config mode first.
   setConfigMode();
 
-  __u16 acc_offset[3] = {65519, 65530, 65532};
+  __u16 acc_offset[3] = {65527, 65527, 0};
   __u16 mag_offset[3] = {196, 65521, 64968};
   __u16 gyr_offset[3] = {65534, 65534, 1};
   __u16 acc_radius[1] = {1000};
