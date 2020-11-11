@@ -31,7 +31,7 @@ public:
     euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
     temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
-    grv_pub_ = nh_.advertise<sensor_msgs::Gravity>("gravity", 1);
+    grv_pub_ = nh_.advertise<ros_bno055::Gravity>("gravity", 1);
   }
 
   void start()

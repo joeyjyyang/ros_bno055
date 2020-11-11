@@ -37,12 +37,14 @@ rospack profile
 - `/magnetic_field`
 - `/temperature`
 - `/orientation_euler`
+- `/gravity`
 
 ## Messages
 - `sensor_msgs/Imu`
 - `sensor_msgs/MagneticField`
 - `sensor_msgs/Temperature`
 - `ros_bno055/OrientationEuler`
+- `ros_bno055/Gravity`
 
 ## Usage
 ### Example
