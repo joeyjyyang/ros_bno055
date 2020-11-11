@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   OrientationEuler.msg
+  Gravity.msg
 )
 
 generate_messages(
