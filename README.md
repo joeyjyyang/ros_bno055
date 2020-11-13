@@ -19,6 +19,7 @@ cd ~/catkin_ws/src
 git clone --single-branch --branch kinetic-devel https://github.com/joeyjyyang/ros_bno055.git
 cd .. 
 sudo apt-get install -y
+sudo apt-get install libi2c-dev # for I2C SMBUS functions
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 catkin_make # catkin build ros_bno055 (if using catkin_tools)
 source devel/setup.bash
