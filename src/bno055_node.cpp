@@ -66,11 +66,11 @@ public:
     {
       ROS_ERROR("Failed to load calibration offset and radius data.");
     }
-    /*if (bno055_driver_.getCalibStat() < 0)
+    if (bno055_driver_.getCalibStat() < 0)
     {
       ROS_ERROR("Failed to get calibration status data.");
     }
-    if (bno055_driver_.getCalibOffset() < 0)
+    /*if (bno055_driver_.getCalibOffset() < 0)
     {
       ROS_ERROR("Failed to get calibration offset data.");
     }
