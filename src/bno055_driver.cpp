@@ -20,8 +20,10 @@ bno055::Bno055Driver::Bno055Driver() : pow_mode_(bno055::PowMode::NORMAL_MODE), 
   printf("BNO055 IMU driver initialized.\n");
 }
 
+// Method to initialize I2C connection with BNO055 sensor.
 int bno055::Bno055Driver::initI2c()
 {
+  // Open I2C Bus.
   if ((file_desc_ = open(I2C_BUS, O_RDWR)) < 0)
   {
     printf("ERROR: Could not open I2C bus: %s.\n", I2C_BUS); 
@@ -32,7 +34,8 @@ int bno055::Bno055Driver::initI2c()
   {
     printf("Opened I2C bus: %s.\n", I2C_BUS);
   }
-  
+
+  // Locate BNO055 sensor
   if (ioctl(file_desc_, I2C_SLAVE, I2C_ADDRESS) < 0)
   {
     printf("ERROR: Could not locate BNO055 sensor at address: 0x%02X.\n", I2C_ADDRESS);
@@ -47,6 +50,8 @@ int bno055::Bno055Driver::initI2c()
   return 1;
 }
 
+// Method to set/reset operation mode to CONFIG.
+// Used for "resetting" the BNO055 sensor after certain read/write operations.
 int bno055::Bno055Driver::setConfigMode()
 {
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, bno055::OprMode::CONFIG_MODE) < 0)
@@ -65,6 +70,9 @@ int bno055::Bno055Driver::setConfigMode()
   return 1;
 }
 
+// Method to set operation mode to IMU.
+// Enables the accelerometer and gyroscope; disables the magnetometer.
+// Sensor readings in this operation mode are relative!
 int bno055::Bno055Driver::setImuMode()
 {
   // Reset to config mode first.
@@ -86,6 +94,9 @@ int bno055::Bno055Driver::setImuMode()
   return 1;
 }
 
+// Method to set operation mode to NDOF.
+// Enables the accelerometer, gyroscope, and magnetometer.
+// Sensor readings in this operation mode are absolute (relative to magnetic north)!
 int bno055::Bno055Driver::setNdofMode()
 {
   // Reset to config mode first.
@@ -107,10 +118,12 @@ int bno055::Bno055Driver::setNdofMode()
   return 1;
 }
 
+// Method to read acceleration data.
 int bno055::Bno055Driver::getAcc()
 {
   bno055::AccData acc_data;
 
+  // Read 6 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::ACC_DATA_X_LSB, 0x06, (__u8*)&acc_data) != 0x06) 
   {
     printf("ERROR: Could not read accelerometer data.\n");
@@ -118,6 +131,7 @@ int bno055::Bno055Driver::getAcc()
     exit(-1);
   }
  
+  // Convert LSB to m/s^2.
   bno055::Bno055Driver::data_.acc_x_ = (double)acc_data.acc_x / 100.0;
   bno055::Bno055Driver::data_.acc_y_ = (double)acc_data.acc_y / 100.0;
   bno055::Bno055Driver::data_.acc_z_ = (double)acc_data.acc_z / 100.0;
@@ -125,10 +139,12 @@ int bno055::Bno055Driver::getAcc()
   return 1;
 }
 
+// Method to read magnetic field strength data.
 int bno055::Bno055Driver::getMag()
 { 
   bno055::MagData mag_data;
 
+  // Read 6 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::MAG_DATA_X_LSB, 0x06, (__u8*)&mag_data) != 0x06) 
   {
     printf("ERROR: Could not read magnetometer data.\n");
@@ -136,6 +152,7 @@ int bno055::Bno055Driver::getMag()
     exit(-1);
   }
   
+  // Convert LSB to uT (microtesla).
   bno055::Bno055Driver::data_.mag_x_ = (double)mag_data.mag_x / 16.0;
   bno055::Bno055Driver::data_.mag_y_ = (double)mag_data.mag_y / 16.0;
   bno055::Bno055Driver::data_.mag_z_ = (double)mag_data.mag_z / 16.0;
@@ -143,10 +160,12 @@ int bno055::Bno055Driver::getMag()
   return 1;
 }
 
+// Method to read angular velocity data.
 int bno055::Bno055Driver::getGyr()
 {
   bno055::GyrData gyr_data;
 
+  // Read 6 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::GYR_DATA_X_LSB, 0x06, (__u8*)&gyr_data) != 0x06) 
   {
     printf("ERROR: Could not read gyroscope data.\n");
@@ -154,6 +173,7 @@ int bno055::Bno055Driver::getGyr()
     exit(-1);
   }
   
+  // Convert LSB to revolutions per second (rps).
   bno055::Bno055Driver::data_.gyr_x_ = (double)gyr_data.gyr_x / 900.0;
   bno055::Bno055Driver::data_.gyr_y_ = (double)gyr_data.gyr_y / 900.0;
   bno055::Bno055Driver::data_.gyr_z_ = (double)gyr_data.gyr_z / 900.0;
@@ -161,10 +181,12 @@ int bno055::Bno055Driver::getGyr()
   return 1;
 }
 
+// Method to read orientation data in Euler angles.
 int bno055::Bno055Driver::getEul()
 {
   bno055::EulData eul_data;
 
+  // Read 6 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::EUL_HEADING_LSB, 0x06, (__u8*)&eul_data) != 0x06)
   {
     printf("ERROR: Could not read euler angles data.\n");
@@ -172,6 +194,7 @@ int bno055::Bno055Driver::getEul()
     exit(-1);
   }
   
+  // Convert LSB to degree.
   bno055::Bno055Driver::data_.eul_heading_ = (double)eul_data.eul_heading / 16.0;
   bno055::Bno055Driver::data_.eul_roll_ = (double)eul_data.eul_roll / 16.0;
   bno055::Bno055Driver::data_.eul_pitch_ = (double)eul_data.eul_pitch / 16.0;
@@ -179,10 +202,12 @@ int bno055::Bno055Driver::getEul()
   return 1;
 }
 
+// Method to read orientation data in Quaternions.
 int bno055::Bno055Driver::getQua()
 {
   bno055::QuaData qua_data;
 
+  // Read 8 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::QUA_DATA_W_LSB, 0x08, (__u8*)&qua_data) != 0x08)
   {
     printf("ERROR: Could not read quaternions data.\n");
@@ -190,6 +215,7 @@ int bno055::Bno055Driver::getQua()
     exit(-1);
   }
   
+  // Convert LSB to Quaternion.
   bno055::Bno055Driver::data_.qua_w_ = (double)qua_data.qua_w / 16384.0;
   bno055::Bno055Driver::data_.qua_x_ = (double)qua_data.qua_x / 16384.0;
   bno055::Bno055Driver::data_.qua_y_ = (double)qua_data.qua_y / 16384.0;
@@ -198,10 +224,12 @@ int bno055::Bno055Driver::getQua()
   return 1;
 }
 
+// Method to read linear acceleration data.
 int bno055::Bno055Driver::getLia()
 {
   bno055::LiaData lia_data;
 
+  // Read 6 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::LIA_DATA_X_LSB, 0x06, (__u8*)&lia_data) != 0x06) 
   {
     printf("ERROR: Could not read linear acceleration data.\n");
@@ -209,6 +237,7 @@ int bno055::Bno055Driver::getLia()
     exit(-1);
   }
  
+  // Convert LSB to m/s^2.
   bno055::Bno055Driver::data_.lia_x_ = (double)lia_data.lia_x / 100.0;
   bno055::Bno055Driver::data_.lia_y_ = (double)lia_data.lia_y / 100.0;
   bno055::Bno055Driver::data_.lia_z_ = (double)lia_data.lia_z / 100.0;
@@ -216,10 +245,12 @@ int bno055::Bno055Driver::getLia()
   return 1;
 }
 
+// Method to read gravity vector data.
 int bno055::Bno055Driver::getGrv()
 {
   bno055::GrvData grv_data;
 
+  // Read 6 bytes.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::GRV_DATA_X_LSB, 0x06, (__u8*)&grv_data) != 0x06) 
   {
     printf("ERROR: Could not read gravity vector data.\n");
@@ -227,6 +258,7 @@ int bno055::Bno055Driver::getGrv()
     exit(-1);
   }
  
+  // Convert LSB to m/s^2.
   bno055::Bno055Driver::data_.grv_x_ = (double)grv_data.grv_x / 100.0;
   bno055::Bno055Driver::data_.grv_y_ = (double)grv_data.grv_y / 100.0;
   bno055::Bno055Driver::data_.grv_z_ = (double)grv_data.grv_z / 100.0;
@@ -234,10 +266,12 @@ int bno055::Bno055Driver::getGrv()
   return 1;
 }
 
+// Method to get temperature data.
 int bno055::Bno055Driver::getTemp()
 {
   bno055::TempData temp_data;
 
+  // Read 1 byte.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::TEMP, 0x01, (__u8*)&temp_data) != 0x01) 
   {
     printf("ERROR: Could not read temperature data.\n");
@@ -250,10 +284,12 @@ int bno055::Bno055Driver::getTemp()
   return 1;
 }
 
+// Method to read calibration status.
 int bno055::Bno055Driver::getCalibStat()
 {
   bno055::CalibStatData calib_stat_data;
 
+  // Read 1 byte.
   if (i2c_smbus_read_i2c_block_data(file_desc_, RegisterMap::CALIB_STAT, 0x01, (__u8*)&calib_stat_data) != 0x01) 
   {
     printf("ERROR: Could not read calibration status data.\n");
@@ -275,6 +311,7 @@ int bno055::Bno055Driver::getCalibStat()
   return 1;
 }
 
+// Method to read calibration offsets.
 int bno055::Bno055Driver::getCalibOffset()
 {
   // Save previous operation mode.
@@ -324,6 +361,7 @@ int bno055::Bno055Driver::getCalibOffset()
   return 1;
 }
 
+// Method to read calibration radii.
 int bno055::Bno055Driver::getCalibRadius()
 {
   // Save previous operation mode.
@@ -365,6 +403,7 @@ int bno055::Bno055Driver::getCalibRadius()
   return 1;
 }
 
+// Method to load (predetermined) offsets and radii values into BNO055 sensor.
 int bno055::Bno055Driver::loadCalib()
 {
   // Save previous operation mode.
@@ -373,12 +412,15 @@ int bno055::Bno055Driver::loadCalib()
   // Reset to config mode first.
   setConfigMode();
 
+  // Predetermined offsets and radii values.
+  // Should be tuned!
   __u16 acc_offset[3] = {65527, 65527, 0};
   __u16 mag_offset[3] = {196, 65521, 64968};
   __u16 gyr_offset[3] = {65534, 65534, 1};
   __u16 acc_radius[1] = {1000};
   __u16 mag_radius[1] = {805};
   
+  // Write offsets and radii values.
   i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::ACC_OFFSET_X_LSB, 0x06, (__u8*)&acc_offset[0]);
   i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_OFFSET_X_LSB, 0x06, (__u8*)&mag_offset[0]);
   i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::GYR_OFFSET_X_LSB, 0x06, (__u8*)&gyr_offset[0]);

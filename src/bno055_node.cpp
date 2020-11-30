@@ -22,11 +22,14 @@ class Bno055Node
 public:
   Bno055Node(const ros::NodeHandle& nh) : nh_(nh)
   {
+    // Initialize BNO055 sensor driver.
+    // Opens I2C Bus and locates BNO055 sensor.
     if (bno055_driver_.initI2c() < 0)
     {
       ROS_ERROR("Failed to initialize BNO055 Driver.");
     }
  
+    // Initialize ROS publishers and ROS topics.
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
     euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
@@ -34,6 +37,7 @@ public:
     grv_pub_ = nh_.advertise<ros_bno055::Gravity>("gravity", 1);
   }
 
+  // Method to set up BNO055 sensor.
   void start()
   {
     // Load calibration offsets and radii.
@@ -46,6 +50,7 @@ public:
     }
   }
   
+  // Method to check if BNO055 sensor is calibrated.
   bool isCalibrated()
   {
     if (bno055_driver_.data_.calib_stat_sys_ == 3)
@@ -58,6 +63,7 @@ public:
     } 
   }
  
+  // Method to self-calibrate BNO055 sensor.
   void selfCalibrate()
   {
     ROS_INFO("Self-calibrating...");
@@ -82,6 +88,7 @@ public:
 
   void publishData()
   {
+    // Get necessary sensor data.
     /*if (bno055_driver_.getAcc() < 0)
     {
       ROS_ERROR("Failed to get accelerometer data.");
@@ -115,6 +122,7 @@ public:
       ROS_ERROR("Failed to get temperature data.");
     }
    
+    // Construct ROS messages.
     ros::Time time_stamp = ros::Time::now();
 
     imu_msg_.header.stamp = time_stamp;
@@ -147,6 +155,7 @@ public:
     grv_msg_.y = bno055_driver_.data_.grv_y_;
     grv_msg_.z = bno055_driver_.data_.grv_z_;
     
+    // Publishes ROS messages to ROS topics.
     imu_pub_.publish(imu_msg_);
     mag_pub_.publish(mag_msg_);
     temp_pub_.publish(temp_msg_);
@@ -187,10 +196,12 @@ int main(int argc, char* argv[])
 
   while (ros::ok())
   {
+    // Always check if BNO055 sensor is calibrated.
     if (bno055_node.isCalibrated())
     {
       bno055_node.publishData();
     }
+    // If uncalibrated, run self-calibration process.
     else
     {
       ROS_ERROR("Sensor not calibrated. Running self-calibration sequence...");
