@@ -43,17 +43,32 @@ public:
     // Load calibration offsets and radii.
     selfCalibrate();
 
-    // Set operation mode to fusion.
+    // Set operation mode to IMU.
+    // Magnetometer disabled.
+    if (bno055_driver_.setImuMode() < 0)
+    {
+      ROS_ERROR("Failed to set operation mode to IMU.");
+    }
+    /*
+    // Set operation mode to NDOF.
+    // Magnetometer enabled.
     if (bno055_driver_.setNdofMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to NDOF.");
-    }
-  }
+    }*/
+ }
   
   // Method to check if BNO055 sensor is calibrated.
   bool isCalibrated()
   {
-    if (bno055_driver_.data_.calib_stat_sys_ == 3)
+    // If operation mode set to NDOF, ensure system is fully calibrated.
+    if (bno055_driver_.getOprMode() == OprMode::NDOF && bno055_driver_.data_.calib_stat_sys_ == 3)
+    {
+      return true;
+    }
+    // If operation mode set to IMU, 
+    // ensure accelerometer and gyroscope are fully calibrated.
+    else if (bno055_driver_.getOprMode() == OprMode::IMU && bno055_driver_.data_.calib_stat_acc_ == 3 && bno055_driver_.data_.calib_stat_gyr_ ==3)
     {
       return true;
     }
@@ -93,10 +108,10 @@ public:
     {
       ROS_ERROR("Failed to get accelerometer data.");
     }*/
-    if (bno055_driver_.getMag() < 0)
+    /*if (bno055_driver_.getMag() < 0)
     {
       ROS_ERROR("Failed to get magnometer data.");
-    }
+    }*/
     if (bno055_driver_.getGyr() < 0)
     {
       ROS_ERROR("Failed to get gyroscope data.");
@@ -137,10 +152,10 @@ public:
     imu_msg_.linear_acceleration.y = bno055_driver_.data_.lia_y_;
     imu_msg_.linear_acceleration.z = bno055_driver_.data_.lia_z_;
     
-    mag_msg_.header.stamp = time_stamp;
+    /*mag_msg_.header.stamp = time_stamp;
     mag_msg_.magnetic_field.x = bno055_driver_.data_.mag_x_;
     mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
-    mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;
+    mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;*/
 
     temp_msg_.header.stamp = time_stamp;
     temp_msg_.temperature = bno055_driver_.data_.temp_;
@@ -157,7 +172,7 @@ public:
     
     // Publishes ROS messages to ROS topics.
     imu_pub_.publish(imu_msg_);
-    mag_pub_.publish(mag_msg_);
+    //mag_pub_.publish(mag_msg_);
     temp_pub_.publish(temp_msg_);
     euler_pub_.publish(euler_msg_);
     grv_pub_.publish(grv_msg_);

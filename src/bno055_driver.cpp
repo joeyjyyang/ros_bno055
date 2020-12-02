@@ -50,6 +50,18 @@ int bno055::Bno055Driver::initI2c()
   return 1;
 }
 
+// Method to get current power mode.
+int bno055::Bno055Driver::getPowMode()
+{
+  return pow_mode_;
+}
+
+// Method to get current operation mode.
+int bno055::Bno055Driver::getOprMode()
+{
+  return opr_mode_;
+}
+
 // Method to set/reset operation mode to CONFIG.
 // Used for "resetting" the BNO055 sensor after certain read/write operations.
 int bno055::Bno055Driver::setConfigMode()
@@ -415,23 +427,23 @@ int bno055::Bno055Driver::loadCalib()
   // Predetermined offsets and radii values.
   // Should be tuned!
   __u16 acc_offset[3] = {65527, 65527, 0};
-  __u16 mag_offset[3] = {196, 65521, 64968};
+  //__u16 mag_offset[3] = {196, 65521, 64968};
   __u16 gyr_offset[3] = {65534, 65534, 1};
   __u16 acc_radius[1] = {1000};
-  __u16 mag_radius[1] = {805};
+  //__u16 mag_radius[1] = {805};
   
   // Write offsets and radii values.
   i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::ACC_OFFSET_X_LSB, 0x06, (__u8*)&acc_offset[0]);
-  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_OFFSET_X_LSB, 0x06, (__u8*)&mag_offset[0]);
+  //i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_OFFSET_X_LSB, 0x06, (__u8*)&mag_offset[0]);
   i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::GYR_OFFSET_X_LSB, 0x06, (__u8*)&gyr_offset[0]);
   i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::ACC_RADIUS_LSB, 0x02, (__u8*)&acc_radius[0]);
-  i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_RADIUS_LSB, 0x02, (__u8*)&mag_radius[0]);
+  //i2c_smbus_write_i2c_block_data(file_desc_, RegisterMap::MAG_RADIUS_LSB, 0x02, (__u8*)&mag_radius[0]);
   
   printf("Setting Accelerometer Offset: X: %d, Y: %d, Z: %d.\n", acc_offset[0], acc_offset[1], acc_offset[2]);  
-  printf("Setting Magnetometer Offset: X: %d, Y: %d, Z: %d.\n", mag_offset[0], mag_offset[1], mag_offset[2]);  
+  //printf("Setting Magnetometer Offset: X: %d, Y: %d, Z: %d.\n", mag_offset[0], mag_offset[1], mag_offset[2]);  
   printf("Setting Gyroscope Offset: X: %d, Y: %d, Z: %d.\n", gyr_offset[0], gyr_offset[1], gyr_offset[2]);  
   printf("Setting Accelerometer Radius: %d.\n", acc_radius[0]);  
-  printf("Setting Magnetometer Radius: %d.\n", mag_radius[0]);  
+  //printf("Setting Magnetometer Radius: %d.\n", mag_radius[0]);  
  
   // Reset to previous mode.
   if (i2c_smbus_write_byte_data(file_desc_, bno055::RegisterMap::OPR_MODE, prev_opr_mode) < 0)

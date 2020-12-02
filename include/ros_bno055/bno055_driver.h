@@ -235,6 +235,8 @@ class Bno055Driver
 public:
   Bno055Driver();
   int initI2c();
+  int getPowMode();
+  int getOprMode();
   int setConfigMode();
   int setImuMode();
   int setNdofMode();
