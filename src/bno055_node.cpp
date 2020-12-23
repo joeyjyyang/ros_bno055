@@ -204,7 +204,7 @@ int main(int argc, char* argv[])
   ros::NodeHandle nh;
   bno055::Bno055Node bno055_node(nh);
 
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(100);
   ros::Rate calibration_rate(1);
    
   bno055_node.start();
