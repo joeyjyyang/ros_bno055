@@ -141,6 +141,7 @@ public:
     ros::Time time_stamp = ros::Time::now();
 
     imu_msg_.header.stamp = time_stamp;
+    imu_msg_.header.frame_id = "imu_link";
     imu_msg_.orientation.x = bno055_driver_.data_.qua_x_; 
     imu_msg_.orientation.y = bno055_driver_.data_.qua_y_;
     imu_msg_.orientation.z = bno055_driver_.data_.qua_z_;
