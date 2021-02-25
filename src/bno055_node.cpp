@@ -32,7 +32,7 @@ public:
     // Initialize ROS publishers and ROS topics.
     imu_pub_ = nh_.advertise<sensor_msgs::Imu>("/imu", 1);
     euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("/imu/orientation_euler", 1);
-    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("/imu/mag", 1);
+    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("/imu/magnetic_field", 1);
     temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("/imu/temperature", 1);
     grv_pub_ = nh_.advertise<ros_bno055::Gravity>("/imu/gravity", 1);
   }
@@ -41,23 +41,28 @@ public:
   void start()
   {
     // Load calibration offsets and radii.
-    selfCalibrate();
-
+    if (bno055_driver_.loadCalib() < 0)
+    {
+      ROS_ERROR("Failed to load calibration offset and radius data.");
+    }
     // Set operation mode to IMU.
     // Magnetometer disabled.
-    if (bno055_driver_.setImuMode() < 0)
+    /*if (bno055_driver_.setImuMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to IMU.");
-    }
-    /*
+    }*/
     // Set operation mode to NDOF.
     // Magnetometer enabled.
     if (bno055_driver_.setNdofMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to NDOF.");
-    }*/
- }
-  
+    }
+    if (bno055_driver_.getCalibStat() < 0)
+    {
+      ROS_ERROR("Failed to get calibration status data.");
+    }
+  }
+  /*
   // Method to check if BNO055 sensor is calibrated.
   bool isCalibrated()
   {
@@ -68,7 +73,7 @@ public:
     }
     // If operation mode set to IMU, 
     // ensure accelerometer and gyroscope are fully calibrated.
-    else if (bno055_driver_.getOprMode() == OprMode::IMU && bno055_driver_.data_.calib_stat_acc_ == 3 && bno055_driver_.data_.calib_stat_gyr_ ==3)
+    else if (bno055_driver_.getOprMode() == OprMode::IMU && bno055_driver_.data_.calib_stat_acc_ == 3 && bno055_driver_.data_.calib_stat_gyr_ == 3)
     {
       return true;
     }
@@ -77,30 +82,7 @@ public:
       return false;
     } 
   }
- 
-  // Method to self-calibrate BNO055 sensor.
-  void selfCalibrate()
-  {
-    ROS_INFO("Self-calibrating...");
-
-    if (bno055_driver_.loadCalib() < 0)
-    {
-      ROS_ERROR("Failed to load calibration offset and radius data.");
-    }
-    if (bno055_driver_.getCalibStat() < 0)
-    {
-      ROS_ERROR("Failed to get calibration status data.");
-    }
-    /*if (bno055_driver_.getCalibOffset() < 0)
-    {
-      ROS_ERROR("Failed to get calibration offset data.");
-    }
-    if (bno055_driver_.getCalibRadius() < 0)
-    {
-      ROS_ERROR("Failed to get calibration radius data.");
-    }*/
-  }
-
+  */
   void publishData()
   {
     // Get necessary sensor data.
@@ -108,10 +90,10 @@ public:
     {
       ROS_ERROR("Failed to get accelerometer data.");
     }
-    /*if (bno055_driver_.getMag() < 0)
+    if (bno055_driver_.getMag() < 0)
     {
       ROS_ERROR("Failed to get magnometer data.");
-    }*/
+    }
     if (bno055_driver_.getGyr() < 0)
     {
       ROS_ERROR("Failed to get gyroscope data.");
@@ -156,10 +138,10 @@ public:
     //imu_msg_.linear_acceleration.y = bno055_driver_.data_.lia_y_;
     //imu_msg_.linear_acceleration.z = bno055_driver_.data_.lia_z_;
     
-    //mag_msg_.header.stamp = time_stamp;
-    //mag_msg_.magnetic_field.x = bno055_driver_.data_.mag_x_;
-    //mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
-    //mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;
+    mag_msg_.header.stamp = time_stamp;
+    mag_msg_.magnetic_field.x = bno055_driver_.data_.mag_x_;
+    mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
+    mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;
 
     temp_msg_.header.stamp = time_stamp;
     temp_msg_.temperature = bno055_driver_.data_.temp_;
@@ -176,7 +158,7 @@ public:
     
     // Publishes ROS messages to ROS topics.
     imu_pub_.publish(imu_msg_);
-    //mag_pub_.publish(mag_msg_);
+    mag_pub_.publish(mag_msg_);
     temp_pub_.publish(temp_msg_);
     euler_pub_.publish(euler_msg_);
     grv_pub_.publish(grv_msg_);
@@ -209,24 +191,12 @@ int main(int argc, char* argv[])
   bno055::Bno055Node bno055_node(nh);
 
   ros::Rate loop_rate(100);
-  ros::Rate calibration_rate(1);
    
   bno055_node.start();
 
   while (ros::ok())
   {
-    // Always check if BNO055 sensor is calibrated.
-    if (bno055_node.isCalibrated())
-    {
-      bno055_node.publishData();
-    }
-    // If uncalibrated, run self-calibration process.
-    else
-    {
-      ROS_ERROR("Sensor not calibrated. Running self-calibration sequence...");
-      bno055_node.selfCalibrate();
-      calibration_rate.sleep();
-    }
+    bno055_node.publishData();
       
     ros::spinOnce();
     loop_rate.sleep();
