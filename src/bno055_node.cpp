@@ -30,11 +30,11 @@ public:
     }
  
     // Initialize ROS publishers and ROS topics.
-    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("imu", 1);
-    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("orientation_euler", 1);
-    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("magnetic_field", 1);
-    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("temperature", 1);
-    grv_pub_ = nh_.advertise<ros_bno055::Gravity>("gravity", 1);
+    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("/imu", 1);
+    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("/imu/orientation_euler", 1);
+    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("/imu/mag", 1);
+    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("/imu/temperature", 1);
+    grv_pub_ = nh_.advertise<ros_bno055::Gravity>("/imu/gravity", 1);
   }
 
   // Method to set up BNO055 sensor.
