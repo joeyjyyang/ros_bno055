@@ -104,10 +104,10 @@ public:
   void publishData()
   {
     // Get necessary sensor data.
-    /*if (bno055_driver_.getAcc() < 0)
+    if (bno055_driver_.getAcc() < 0)
     {
       ROS_ERROR("Failed to get accelerometer data.");
-    }*/
+    }
     /*if (bno055_driver_.getMag() < 0)
     {
       ROS_ERROR("Failed to get magnometer data.");
@@ -136,7 +136,7 @@ public:
     {
       ROS_ERROR("Failed to get temperature data.");
     }
-   
+
     // Construct ROS messages.
     ros::Time time_stamp = ros::Time::now();
 
@@ -149,14 +149,17 @@ public:
     imu_msg_.angular_velocity.x = bno055_driver_.data_.gyr_x_;
     imu_msg_.angular_velocity.y = bno055_driver_.data_.gyr_y_;
     imu_msg_.angular_velocity.z = bno055_driver_.data_.gyr_z_;
-    imu_msg_.linear_acceleration.x = bno055_driver_.data_.lia_x_;
-    imu_msg_.linear_acceleration.y = bno055_driver_.data_.lia_y_;
-    imu_msg_.linear_acceleration.z = bno055_driver_.data_.lia_z_;
+    imu_msg_.linear_acceleration.x = bno055_driver_.data_.acc_x_;
+    imu_msg_.linear_acceleration.y = bno055_driver_.data_.acc_y_;
+    imu_msg_.linear_acceleration.z = bno055_driver_.data_.acc_z_;
+    //imu_msg_.linear_acceleration.x = bno055_driver_.data_.lia_x_;
+    //imu_msg_.linear_acceleration.y = bno055_driver_.data_.lia_y_;
+    //imu_msg_.linear_acceleration.z = bno055_driver_.data_.lia_z_;
     
-    /*mag_msg_.header.stamp = time_stamp;
-    mag_msg_.magnetic_field.x = bno055_driver_.data_.mag_x_;
-    mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
-    mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;*/
+    //mag_msg_.header.stamp = time_stamp;
+    //mag_msg_.magnetic_field.x = bno055_driver_.data_.mag_x_;
+    //mag_msg_.magnetic_field.y = bno055_driver_.data_.mag_y_;
+    //mag_msg_.magnetic_field.z = bno055_driver_.data_.mag_z_;
 
     temp_msg_.header.stamp = time_stamp;
     temp_msg_.temperature = bno055_driver_.data_.temp_;
