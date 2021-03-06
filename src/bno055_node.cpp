@@ -30,7 +30,7 @@ public:
     }
  
     // Initialize ROS publishers and ROS topics.
-    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("/imu", 1);
+    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("/imu/data", 1);
     euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("/imu/orientation_euler", 1);
     mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("/imu/magnetic_field", 1);
     temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("/imu/temperature", 1);
