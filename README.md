@@ -34,11 +34,11 @@ rospack profile
 - `bno055_node`
 
 ## Topics
-- `/imu`
-- `/magnetic_field`
-- `/temperature`
-- `/orientation_euler`
-- `/gravity`
+- `/imu/data`
+- `/imu//magnetic_field`
+- `/imu/temperature`
+- `/imu/orientation_euler`
+- `/imu/gravity`
 
 ## Messages
 - `sensor_msgs/Imu`
