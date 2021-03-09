@@ -30,11 +30,11 @@ public:
     }
  
     // Initialize ROS publishers and ROS topics.
-    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("/imu/data", 1);
-    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("/imu/orientation_euler", 1);
-    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("/imu/magnetic_field", 1);
-    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("/imu/temperature", 1);
-    grv_pub_ = nh_.advertise<ros_bno055::Gravity>("/imu/gravity", 1);
+    imu_pub_ = nh_.advertise<sensor_msgs::Imu>("/imu/data", 100);
+    euler_pub_ = nh_.advertise<ros_bno055::OrientationEuler>("/imu/orientation_euler", 100);
+    mag_pub_ = nh_.advertise<sensor_msgs::MagneticField>("/imu/magnetic_field", 100);
+    temp_pub_ = nh_.advertise<sensor_msgs::Temperature>("/imu/temperature", 100);
+    grv_pub_ = nh_.advertise<ros_bno055::Gravity>("/imu/gravity", 100);
   }
 
   // Method to set up BNO055 sensor.
@@ -47,16 +47,16 @@ public:
     }
     // Set operation mode to IMU.
     // Magnetometer disabled.
-    /*if (bno055_driver_.setImuMode() < 0)
+    if (bno055_driver_.setImuMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to IMU.");
-    }*/
+    }
     // Set operation mode to NDOF.
     // Magnetometer enabled.
-    if (bno055_driver_.setNdofMode() < 0)
+    /*if (bno055_driver_.setNdofMode() < 0)
     {
       ROS_ERROR("Failed to set operation mode to NDOF.");
-    }
+    }*/
     if (bno055_driver_.getCalibStat() < 0)
     {
       ROS_ERROR("Failed to get calibration status data.");
