@@ -35,17 +35,10 @@ rospack profile
 
 ## Topics
 - `/imu/data`
-- `/imu//magnetic_field`
+- `/imu/magnetic_field`
 - `/imu/temperature`
 - `/imu/orientation_euler`
 - `/imu/gravity`
-
-## Messages
-- `sensor_msgs/Imu`
-- `sensor_msgs/MagneticField`
-- `sensor_msgs/Temperature`
-- `ros_bno055/OrientationEuler`
-- `ros_bno055/Gravity`
 
 ## Usage
 ### Example
